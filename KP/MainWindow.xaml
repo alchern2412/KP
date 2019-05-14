@@ -5,8 +5,141 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="KP" Height="600" Width="1000">
+
+    <!--<Window.DataContext>
+        <local:RoomViewModel />
+    </Window.DataContext>-->
+    <Window.Resources>
+        <Style x:Key="btnFloor">
+            <Setter Property="Button.MinHeight" Value="90"></Setter>
+            <Setter Property="Button.Margin" Value="5 5 5 0"></Setter>
+            <Setter Property="Button.Background" Value="Beige"/>
+            <Setter Property="Button.FontSize" Value="50"/>
+        </Style>
+        <Style x:Key="btnRoom">
+            <Setter Property="Button.MinHeight" Value="200"></Setter>
+            <Setter Property="Button.Margin" Value="5 5 5 0"></Setter>
+            <Setter Property="Button.Background" Value="Beige"/>
+        </Style>
+        <Style x:Key="txtBoxRoom" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="btnStudentInfo">
+            <Setter Property="Button.Margin" Value="1"/>
+            <Setter Property="Button.FontSize" Value="10"/>
+            <!--<Setter Property="Button.HorizontalAlignment" Value="Left"/>
+            <Setter Property="Button.Width" Value="auto"/>-->
+        </Style>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="New Project" ></MenuItem>
+                <MenuItem Header="Open Project" >
+                    <MenuItem Header="WinForms"></MenuItem>
+                    <MenuItem Header="WPF" ></MenuItem>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Exit" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Редактировать" >
+                <MenuItem Header="Добавить этаж"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="View" ></MenuItem>
+        </Menu>
+        <Grid Background="AliceBlue">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition Width="2.5*"></ColumnDefinition>
+                <ColumnDefinition Width="6*"></ColumnDefinition>
+                
+            </Grid.ColumnDefinitions>
+            <!--ЭТАЖИ-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <ListBox Margin="5" x:Name="floorsList" ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}" Background="#FFFFD0D0">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
+                            
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MinWidth="100">
+                                <StackPanel Background="#FFFFE7E7" HorizontalAlignment="Stretch">
+                                    <TextBlock Style="{StaticResource ResourceKey=txtBoxRoom}" Text="{Binding Path=Number}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Margin="5" Width="30" Content="+" Command="{Binding AddFloorCommand}"/>
+                    <Button Margin="5" Width="30" Content="-" Command="{Binding RemoveFloorCommand}" CommandParameter="{Binding SelectedFloor}"/>
+                </StackPanel>
+                
+            </Grid>
+            
+            <!--Комнаты-->
+            <Grid x:Name="gridRooms" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <ListBox Margin="5" x:Name="roomsList" ItemsSource="{Binding Path=SelectedRooms}" SelectedItem="{Binding SelectedRoomF}" >
+                        <ListBox.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
+
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="5" MinWidth="200">
+                                    <TextBlock Margin="5" HorizontalAlignment="Center" Style="{StaticResource ResourceKey=txtBoxRoom}" Text="{Binding Path=Number}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+                <!--Кнопки комнат-->
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Margin="5" Width="30" Content="+" Command="{Binding AddRoomCommand}"/>
+                    <Button Margin="5" Width="30" Content="-" Command="{Binding RemoveRoomCommand}" CommandParameter="{Binding SelectedRoomF}"/>
+                </StackPanel>
+            </Grid>
+            
+            
+            <ScrollViewer Grid.Column="2">
+                <Grid DataContext="{Binding ElementName=roomsList, Path=SelectedItem}">
+                    <ListBox Margin="5" Grid.Row="1" x:Name="studentsList" ItemsSource="{Binding Students}" HorizontalAlignment="Left">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Width="200">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="0 0 2 0" Text="{Binding LastName}"/>
+                                        <TextBlock Margin="0 0 2 0" Text="{Binding FirstName}"/>
+                                        <TextBlock Text="{Binding SecondName}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+                
+            </ScrollViewer>
+
+
+        </Grid>
+        <!--<Button Margin="5" Width="30" Content="+" Command="{Binding AddRoomCommand}"/>-->
+    </DockPanel>
 </Window>

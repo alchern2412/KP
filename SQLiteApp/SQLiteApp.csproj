@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{30160F08-BCF9-4408-B564-8FC99C998774}</ProjectGuid>
+    <ProjectGuid>{DC15DE6D-2A84-4BB5-9E64-ADFFC5278A83}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>KP</RootNamespace>
-    <AssemblyName>KP</AssemblyName>
+    <RootNamespace>SQLiteApp</RootNamespace>
+    <AssemblyName>SQLiteApp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -46,6 +46,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlClient, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.6.0\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.SQLite, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.110.0\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
@@ -55,8 +58,6 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.110.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -76,46 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationViewModel.cs" />
-    <Compile Include="Faculty.cs">
-      <DependentUpon>Hostel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Floor.cs">
-      <DependentUpon>Hostel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="FloorWindowView.xaml.cs">
-      <DependentUpon>FloorWindowView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FloorWindowViewModel.cs" />
-    <Compile Include="Hostel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Hostel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Hostel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Hostel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Hostel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Hostel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="RelayCommand.cs" />
-    <Compile Include="Room.cs">
-      <DependentUpon>Hostel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RoomWindowView.xaml.cs">
-      <DependentUpon>RoomWindowView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="RoomWindowViewModel.cs" />
-    <Compile Include="Student.cs">
-      <DependentUpon>Hostel.tt</DependentUpon>
-    </Compile>
-    <Page Include="FloorWindowView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,16 +86,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ApplicationContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RoomWindowView.xaml">
+    <Page Include="PhoneWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Phone.cs" />
+    <Compile Include="PhoneWindow.xaml.cs">
+      <DependentUpon>PhoneWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,12 +118,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Hostel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Hostel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Hostel.edmx.diagram">
-      <DependentUpon>Hostel.edmx</DependentUpon>
+    <None Include="mobiles.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -168,20 +131,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Hostel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Hostel.Context.cs</LastGenOutput>
-      <DependentUpon>Hostel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Hostel.edmx.sql" />
-    <Content Include="Hostel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Hostel.cs</LastGenOutput>
-      <DependentUpon>Hostel.edmx</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />

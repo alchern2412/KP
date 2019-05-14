@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KP
+namespace WpfApp1
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -23,7 +23,6 @@ namespace KP
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new ApplicationViewModel();
         }
     }
 }

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Hostel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="HostelStoreContainer">
+    <EntitySet Name="Students" EntityType="Hostel.Store.Students" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rooms" EntityType="Hostel.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Faculties" EntityType="Hostel.Store.Faculties" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Floors" EntityType="Hostel.Store.Floors" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="StudentRoom" Association="Hostel.Store.StudentRoom">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Room" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="StudentFaculty" Association="Hostel.Store.StudentFaculty">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Faculty" EntitySet="Faculties" />
+    </AssociationSet>
+    <AssociationSet Name="FloorRoom" Association="Hostel.Store.FloorRoom">
+      <End Role="Floor" EntitySet="Floors" />
+      <End Role="Room" EntitySet="Rooms" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Students">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="SecondName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Note" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Course" Type="int" Nullable="true" />
+    <Property Name="Group" Type="int" Nullable="true" />
+    <Property Name="Room_Id" Type="int" Nullable="false" />
+    <Property Name="Faculty_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Number" Type="int" Nullable="false" />
+    <Property Name="Floor_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Faculties">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FacultyName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Floors">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Number" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="StudentRoom">
+    <End Role="Student" Type="Hostel.Store.Students" Multiplicity="*" />
+    <End Role="Room" Type="Hostel.Store.Rooms" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="Room_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StudentFaculty">
+    <End Role="Student" Type="Hostel.Store.Students" Multiplicity="*" />
+    <End Role="Faculty" Type="Hostel.Store.Faculties" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Faculty">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="Faculty_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FloorRoom">
+    <End Role="Floor" Type="Hostel.Store.Floors" Multiplicity="1" />
+    <End Role="Room" Type="Hostel.Store.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Floor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="Floor_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Hostel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="HostelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Students" EntityType="Hostel.Student" />
+          <EntitySet Name="Rooms" EntityType="Hostel.Room" />
+          <EntitySet Name="Faculties" EntityType="Hostel.Faculty" />
+          <AssociationSet Name="StudentRoom" Association="Hostel.StudentRoom">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="StudentFaculty" Association="Hostel.StudentFaculty">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Faculty" EntitySet="Faculties" />
+          </AssociationSet>
+          <EntitySet Name="Floors" EntityType="Hostel.Floor" />
+          <AssociationSet Name="FloorRoom" Association="Hostel.FloorRoom">
+            <End Role="Floor" EntitySet="Floors" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="SecondName" Type="String" Nullable="true" />
+          <Property Name="Note" Type="String" Nullable="true" />
+          <Property Name="Course" Type="Int32" Nullable="true" />
+          <Property Name="Group" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="Room" Relationship="Hostel.StudentRoom" FromRole="Student" ToRole="Room" />
+          <NavigationProperty Name="Faculty" Relationship="Hostel.StudentFaculty" FromRole="Student" ToRole="Faculty" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Students" Relationship="Hostel.StudentRoom" FromRole="Room" ToRole="Student" />
+          <NavigationProperty Name="Floor" Relationship="Hostel.FloorRoom" FromRole="Room" ToRole="Floor" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FacultyName" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Students" Relationship="Hostel.StudentFaculty" FromRole="Faculty" ToRole="Student" />
+        </EntityType>
+        <Association Name="StudentRoom">
+          <End Type="Hostel.Student" Role="Student" Multiplicity="*" />
+          <End Type="Hostel.Room" Role="Room" Multiplicity="1" />
+        </Association>
+        <Association Name="StudentFaculty">
+          <End Type="Hostel.Student" Role="Student" Multiplicity="*" />
+          <End Type="Hostel.Faculty" Role="Faculty" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Floor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Rooms" Relationship="Hostel.FloorRoom" FromRole="Floor" ToRole="Room" />
+        </EntityType>
+        <Association Name="FloorRoom">
+          <End Type="Hostel.Floor" Role="Floor" Multiplicity="1" />
+          <End Type="Hostel.Room" Role="Room" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="HostelStoreContainer" CdmEntityContainer="HostelContainer">
+    <EntitySetMapping Name="Students">
+      <EntityTypeMapping TypeName="IsTypeOf(Hostel.Student)">
+        <MappingFragment StoreEntitySet="Students">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Course" ColumnName="Course" />
+          <ScalarProperty Name="Group" ColumnName="Group" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="IsTypeOf(Hostel.Room)">
+        <MappingFragment StoreEntitySet="Rooms">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Faculties">
+      <EntityTypeMapping TypeName="IsTypeOf(Hostel.Faculty)">
+        <MappingFragment StoreEntitySet="Faculties">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Floors">
+      <EntityTypeMapping TypeName="IsTypeOf(Hostel.Floor)">
+        <MappingFragment StoreEntitySet="Floors">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="StudentRoom" TypeName="Hostel.StudentRoom" StoreEntitySet="Students">
+      <EndProperty Name="Room">
+        <ScalarProperty Name="Id" ColumnName="Room_Id" />
+      </EndProperty>
+      <EndProperty Name="Student">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="StudentFaculty" TypeName="Hostel.StudentFaculty" StoreEntitySet="Students">
+      <EndProperty Name="Faculty">
+        <ScalarProperty Name="Id" ColumnName="Faculty_Id" />
+      </EndProperty>
+      <EndProperty Name="Student">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FloorRoom" TypeName="Hostel.FloorRoom" StoreEntitySet="Rooms">
+      <EndProperty Name="Floor">
+        <ScalarProperty Name="Id" ColumnName="Floor_Id" />
+      </EndProperty>
+      <EndProperty Name="Room">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

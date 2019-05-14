@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KP
+namespace MVVM1
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -23,7 +23,9 @@ namespace KP
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new ApplicationViewModel();
+
+            DataContext =
+    new ApplicationViewModel(new DefaultDialogService(), new JsonFileService());
         }
     }
 }
