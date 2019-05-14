@@ -111,34 +111,61 @@ namespace KP
 
         #region CommandsFloor
 
+
+        private int floorSelectedIndex;  // выбранный этаж
+        public int FloorSelectedIndex
+        {
+            get { return floorSelectedIndex; }
+            set
+            {
+                floorSelectedIndex = value;
+                OnPropertyChanged("FloorSelectedIndexr");
+            }
+        }
+
         // команда добавления нового объекта
         private RelayCommand addFloorCommand;
         public RelayCommand AddFloorCommand
         {
             get
             {
-                return addFloorCommand ??
-                  (addFloorCommand = new RelayCommand(obj =>
-                  {
-                      FloorWindowViewModel floorWindow = new FloorWindowViewModel(new Floor());
-                      if (floorWindow.floorWindowView.ShowDialog() == true)
+                
+                    return addFloorCommand ??
+                      (addFloorCommand = new RelayCommand(obj =>
                       {
-                          Floor floor = floorWindow.Floor;
-                          Floors.Insert(Floors.Count, floor);
-                          db.Floors.Add(floor);
-                          OnPropertyChanged("Floors");
-                          db.SaveChanges();
-                      }
+                          try
+                          { 
+                              FloorWindowViewModel floorWindow = new FloorWindowViewModel(new Floor());
+                              if (floorWindow.floorWindowView.ShowDialog() == true)
+                              {
+                                  Floor floor = floorWindow.Floor;
+                                  foreach(Floor i in db.Floors)
+                                  {
+                                      if(i.Number == floor.Number)
+                                      {
+                                          throw new Exception("Дублирование этажей");
+                                      }
+                                  }
+                                  Floors.Insert(Floors.Count, floor);
+                                  db.Floors.Add(floor);
+                                  OnPropertyChanged("Floors");
+                                  db.SaveChanges();
+                              }
+                          }
+                          catch (Exception ex)
+                          {
+                              MessageBox.Show(ex.Message);
+                          }
 
 
+                          //Floor floor = new Floor();
+                          //Floors.Insert(0, floor);
+                          //SelectedFloor = floor;
 
-                      //Floor floor = new Floor();
-                      //Floors.Insert(0, floor);
-                      //SelectedFloor = floor;
-
-                      //db.Floors.Add(floor);
-                      //db.SaveChanges();
-                  }));
+                          //db.Floors.Add(floor);
+                          //db.SaveChanges();
+                      }));
+                
             }
         }
 
@@ -162,6 +189,15 @@ namespace KP
                             {
                                 if (Rooms[i].Floor == floor)
                                 {
+                                    /*Удалить из observableCollection студентов*/
+                                    for (int j = 0; j < Students.Count; j++)
+                                    {
+                                        if (Students[i].Room == Rooms[j])
+                                        {
+                                            Students.Remove(Students[j]);
+                                        }
+                                    }
+
                                     Rooms.Remove(Rooms[i]);
                                 }
                             }
@@ -173,6 +209,15 @@ namespace KP
                             {
                                 if(i.Floor == floor)
                                 {
+                                    /*Удалить из БД комнаты этажа*/
+                                    foreach (var j in db.Students)
+                                    {
+                                        if (j.Room == i)
+                                        {
+                                            db.Students.Remove(j);
+                                        }
+                                    }
+
                                     db.Rooms.Remove(i);
                                 }
                             }
@@ -182,7 +227,8 @@ namespace KP
 
                             OnPropertyChanged("SelectedRooms");
                             OnPropertyChanged("Rooms");
-                            
+                            floorSelectedIndex = floorSelectedIndex - 1;
+                            OnPropertyChanged("FloorSelectedIndex");
 
                             db.SaveChanges();
                         }
@@ -221,18 +267,23 @@ namespace KP
             set
             {
                 selectedFloor = value;
-                selectedRooms = new ObservableCollection<Room>(selectedFloor.Rooms);
+                if (selectedFloor != null)
+                {
+                    selectedRooms = new ObservableCollection<Room>(selectedFloor.Rooms.OrderBy(s => s.Number));
+                }
                 OnPropertyChanged("SelectedRooms");
                 OnPropertyChanged("SelectedFloor");
             }
         }
 
+        /*Комнаты выбранного этажа, которые нужно показать*/
         private ObservableCollection<Room> selectedRooms;
         public ObservableCollection<Room> SelectedRooms
         {
             get { return selectedRooms; }
             set
             {
+                
                 selectedRooms = value;
                 OnPropertyChanged("SelectedRooms");
             }
@@ -258,6 +309,16 @@ namespace KP
                               Room room = roomWindow.Room;
                               int flNum = Convert.ToInt32(room.Number.ToString().Substring(0, 1));
                               Floor findedfloor = null;
+
+                              foreach (Room i in db.Rooms)
+                              {
+                                  if (i.Number == room.Number)
+                                  {
+                                      throw new Exception("Ошибка! Дублирование комнат.");
+                                  }
+                              }
+
+                              /*Поиск этажа*/
                               foreach (Floor findfl in db.Floors)
                               {
                                   if (findfl.Number == flNum)
@@ -270,6 +331,7 @@ namespace KP
                               {
                                   throw new Exception("Не создан этаж комнаты");
                               }
+
                               room.Floor = findedfloor;
                               Rooms.Insert(Rooms.Count, room);
                               SelectedRooms.Insert(SelectedRooms.Count, room);
@@ -309,7 +371,26 @@ namespace KP
                         Room room = obj as Room;
                         if (room != null)
                         {
+                            /*Удалить из observableCollection студентов*/
+                            for (int i = 0; i < Students.Count; i++)
+                            {
+                                if (Students[i].Room == room)
+                                {
+                                    Students.Remove(Students[i]);
+                                }
+                            }
+
                             Rooms.Remove(room);
+
+                            /*Удалить из БД комнаты этажа*/
+                            foreach (var i in db.Students)
+                            {
+                                if (i.Room == room)
+                                {
+                                    db.Students.Remove(i);
+                                }
+                            }
+                                                       
                             SelectedRooms.Remove(room);
                             db.Rooms.Remove(room);
                             db.SaveChanges();
@@ -350,6 +431,14 @@ namespace KP
             {
                 selectedRoom = value;
                 OnPropertyChanged("SelectedRoomF");
+                if (selectedRoom != null)
+                {
+                    selectedStudents = new ObservableCollection<Student>(selectedRoom.Students);
+
+                }
+                OnPropertyChanged("SelectedRooms");
+                OnPropertyChanged("SelectedFloor");
+                OnPropertyChanged("SelectedStudents");
             }
         }
 
@@ -357,9 +446,99 @@ namespace KP
 
         #region CommandsStudents
 
-        RelayCommand addStudentCommand;
-        RelayCommand editStudentCommand;
-        RelayCommand deleteStudentCommand;
+        private ObservableCollection<Student> selectedStudents;
+        public ObservableCollection<Student> SelectedStudents
+        {
+            get { return selectedStudents; }
+            set
+            {
+                selectedStudents = value;
+                OnPropertyChanged("SelectedStudents");
+            }
+        }
+
+        // команда добавления нового объекта
+        private RelayCommand addStudentCommand;
+        public RelayCommand AddStudentCommand
+        {
+            get
+            {
+                return addStudentCommand ??
+                  (addStudentCommand = new RelayCommand(obj =>
+                  {
+                      try
+                      {
+                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(new Student());
+                          if (studentWindow.studentWindowView.ShowDialog() == true)
+                          {
+                              Student student = studentWindow.Student;
+
+                              Students.Insert(Students.Count, student);
+                              //SelectedRooms.Insert(SelectedRooms.Count, room);
+
+                              db.Students.Add(student);
+                              OnPropertyChanged("Students");
+                              OnPropertyChanged("SelectedStudents");
+                              db.SaveChanges();
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+
+
+
+                      //Room room = new Room();
+                      //Rooms.Insert(0, room);
+                      //SelectedRoomF = room;
+
+                      //db.Rooms.Add(room);
+                      //db.SaveChanges();
+                  }));
+            }
+        }
+
+        // команда удаления комнаты
+        //private RelayCommand removeRoomCommand;
+        //public RelayCommand RemoveRoomCommand
+        //{
+        //    get
+        //    {
+        //        return removeRoomCommand ??
+        //            (removeRoomCommand = new RelayCommand(obj =>
+        //            {
+        //                Room room = obj as Room;
+        //                if (room != null)
+        //                {
+        //                    /*Удалить из observableCollection студентов*/
+        //                    for (int i = 0; i < Students.Count; i++)
+        //                    {
+        //                        if (Students[i].Room == room)
+        //                        {
+        //                            Students.Remove(Students[i]);
+        //                        }
+        //                    }
+
+        //                    Rooms.Remove(room);
+
+        //                    /*Удалить из БД комнаты этажа*/
+        //                    foreach (var i in db.Students)
+        //                    {
+        //                        if (i.Room == room)
+        //                        {
+        //                            db.Students.Remove(i);
+        //                        }
+        //                    }
+
+        //                    SelectedRooms.Remove(room);
+        //                    db.Rooms.Remove(room);
+        //                    db.SaveChanges();
+        //                }
+        //            },
+        //            (obj) => Rooms.Count > 0));
+        //    }
+        //}
 
         #endregion
     }

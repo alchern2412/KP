@@ -112,6 +112,10 @@
     <Compile Include="Student.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
+    <Compile Include="StudentWindowView.xaml.cs">
+      <DependentUpon>StudentWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StudentWindowViewModel.cs" />
     <Page Include="FloorWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +133,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RoomWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudentWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

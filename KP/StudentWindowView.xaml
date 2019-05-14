@@ -1,0 +1,54 @@
+﻿<Window x:Class="KP.StudentWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KP"
+        mc:Ignorable="d"
+        Title="StudentWindowView" Height="300" Width="300">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Фамилия" />
+        <TextBox Text="{Binding LastName}" Grid.Column="1" />
+
+        <TextBlock Grid.Row="1" Text="Имя" />
+        <TextBox Grid.Row="1" Text="{Binding FirstName}" Grid.Column="1" />
+
+        <TextBlock Grid.Row="2" Text="Отчество" />
+        <TextBox Grid.Row="2" Text="{Binding SecondName}" Grid.Column="1" />
+
+        <TextBlock Grid.Row="3" Text="Курс" />
+        <TextBox Grid.Row="3" Text="{Binding Course}" Grid.Column="1" />
+
+        <TextBlock Grid.Row="4" Text="Группа" />
+        <TextBox Grid.Row="4" Text="{Binding Group}" Grid.Column="1" />
+
+        <TextBlock Grid.Row="5" Text="Факультет" />
+        <TextBox Grid.Row="5" Text="{Binding Faculty}" Grid.Column="1" />
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="6" Grid.Column="1">
+            <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
+            <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>
