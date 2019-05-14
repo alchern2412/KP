@@ -124,7 +124,7 @@
                     <RowDefinition/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>    
-                <ListBox Margin="0" Grid.Row="0" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" MinWidth="502">
+                <ListBox Margin="0" Grid.Row="0" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" SelectedItem="{Binding SelectedStudent}" MinWidth="502">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -176,6 +176,7 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Button Margin="5" Width="30" Content="+" Command="{Binding AddStudentCommand}"/>
                         <Button Margin="5" Width="30" Content="-" Command="{Binding RemoveStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
+                        <Button Margin="5" Width="30" Content="Edit" Command="{Binding EditStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
                     </StackPanel>
                 </Grid>
 

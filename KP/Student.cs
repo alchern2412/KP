@@ -24,5 +24,22 @@ namespace KP
     
         public virtual Room Room { get; set; }
         public virtual Faculty Faculty { get; set; }
+
+
+        /*Создает новый объект с такими же данными*/
+        public Student Copy()
+        {
+            Student tmp = new Student();
+            tmp.LastName = this.LastName;
+            tmp.FirstName = this.FirstName;
+            tmp.SecondName = this.SecondName;
+            tmp.Note = this.Note;
+            tmp.Course = this.Course;
+            tmp.Group = this.Group;
+            tmp.Room = this.Room;
+            tmp.Faculty = this.Faculty;
+
+            return tmp;
+        }
     }
 }

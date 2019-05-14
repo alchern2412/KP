@@ -23,30 +23,36 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="120" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <TextBlock Text="Фамилия" />
-        <TextBox Text="{Binding LastName}" Grid.Column="1" />
+        <TextBox Text="{Binding SelectedLastName, Mode=TwoWay}" Grid.Column="1" />
 
         <TextBlock Grid.Row="1" Text="Имя" />
-        <TextBox Grid.Row="1" Text="{Binding FirstName}" Grid.Column="1" />
+        <TextBox Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay}" Grid.Column="1" />
 
         <TextBlock Grid.Row="2" Text="Отчество" />
-        <TextBox Grid.Row="2" Text="{Binding SecondName}" Grid.Column="1" />
+        <TextBox Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay}" Grid.Column="1" />
 
         <TextBlock Grid.Row="3" Text="Курс" />
-        <TextBox Grid.Row="3" Text="{Binding Course}" Grid.Column="1" />
+        <TextBox Grid.Row="3" Text="{Binding SelectedCourse, Mode=TwoWay}" Grid.Column="1" />
 
         <TextBlock Grid.Row="4" Text="Группа" />
-        <TextBox Grid.Row="4" Text="{Binding Group}" Grid.Column="1" />
+        <TextBox Grid.Row="4" Text="{Binding SelectedGroup, Mode=TwoWay}" Grid.Column="1" />
 
         <TextBlock Grid.Row="5" Text="Факультет" />
-        <TextBox Grid.Row="5" Text="{Binding Faculty}" Grid.Column="1" />
+        
+            <ComboBox Grid.Row="5" Grid.Column="1" SelectedItem="{Binding SelectedFaculty, Mode=TwoWay}" ItemsSource="{Binding Faculties, UpdateSourceTrigger=PropertyChanged}"  />
+        
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="6" Grid.Column="1">
+        <TextBlock Grid.Row="6" Text="Характеристика" />
+        <TextBox Grid.Row="6" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.Column="1" />
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.Column="1">
             <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>

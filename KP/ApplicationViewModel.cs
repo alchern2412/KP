@@ -192,13 +192,15 @@ namespace KP
                                     /*Удалить из observableCollection студентов*/
                                     for (int j = 0; j < Students.Count; j++)
                                     {
-                                        if (Students[i].Room == Rooms[j])
+                                        if (Students[j].Room == Rooms[i])
                                         {
-                                            Students.Remove(Students[j]);
+                                            //Students.Remove(Students[j]);
+                                            SelectedStudents.Remove(Students[j]);
                                         }
                                     }
 
-                                    Rooms.Remove(Rooms[i]);
+                                    SelectedRooms.Remove(Rooms[i]);
+                                    OnPropertyChanged("SelectedRooms");
                                 }
                             }
 
@@ -376,6 +378,7 @@ namespace KP
                             {
                                 if (Students[i].Room == room)
                                 {
+                                    SelectedStudents.Remove(Students[i]);
                                     Students.Remove(Students[i]);
                                 }
                             }
@@ -468,7 +471,7 @@ namespace KP
                   {
                       try
                       {
-                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(new Student());
+                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(new Student(), Faculties, SelectedRoomF);
                           if (studentWindow.studentWindowView.ShowDialog() == true)
                           {
                               Student student = studentWindow.Student;
@@ -477,6 +480,7 @@ namespace KP
                               //SelectedRooms.Insert(SelectedRooms.Count, room);
 
                               db.Students.Add(student);
+                              SelectedStudents.Add(student);
                               OnPropertyChanged("Students");
                               OnPropertyChanged("SelectedStudents");
                               db.SaveChanges();
@@ -499,46 +503,79 @@ namespace KP
             }
         }
 
-        // команда удаления комнаты
-        //private RelayCommand removeRoomCommand;
-        //public RelayCommand RemoveRoomCommand
-        //{
-        //    get
-        //    {
-        //        return removeRoomCommand ??
-        //            (removeRoomCommand = new RelayCommand(obj =>
-        //            {
-        //                Room room = obj as Room;
-        //                if (room != null)
-        //                {
-        //                    /*Удалить из observableCollection студентов*/
-        //                    for (int i = 0; i < Students.Count; i++)
-        //                    {
-        //                        if (Students[i].Room == room)
-        //                        {
-        //                            Students.Remove(Students[i]);
-        //                        }
-        //                    }
+        private Student selectedStudent;
+        public Student SelectedStudent
+        {
+            get { return selectedStudent; }
+            set
+            {
+                selectedStudent = value;
+                OnPropertyChanged("SelectedStudent");
+            }
+        }
 
-        //                    Rooms.Remove(room);
+        //команда удаления студента
+        private RelayCommand removeStudentCommand;
+        public RelayCommand RemoveStudentCommand
+        {
+            get
+            {
+                return removeStudentCommand ??
+                    (removeStudentCommand = new RelayCommand(obj =>
+                    {
+                        Student student = obj as Student;
+                        if (student != null)
+                        {
+                            //Students.Remove(student);
 
-        //                    /*Удалить из БД комнаты этажа*/
-        //                    foreach (var i in db.Students)
-        //                    {
-        //                        if (i.Room == room)
-        //                        {
-        //                            db.Students.Remove(i);
-        //                        }
-        //                    }
+                            SelectedStudents.Remove(student);
+                            db.Students.Remove(student);
+                            db.SaveChanges();
+                        }
+                    },
+                    (obj) => Students.Count > 0));
+            }
+        }
 
-        //                    SelectedRooms.Remove(room);
-        //                    db.Rooms.Remove(room);
-        //                    db.SaveChanges();
-        //                }
-        //            },
-        //            (obj) => Rooms.Count > 0));
-        //    }
-        //}
+
+        private RelayCommand editStudentCommand;
+        public RelayCommand EditStudentCommand
+        {
+            get
+            {
+                return editStudentCommand ??
+                    (editStudentCommand = new RelayCommand(obj =>
+                    {
+                        Student student = obj as Student;
+                        if (student != null)
+                        {
+                            StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedRoomF);
+                            if (studentWindow.studentWindowView.ShowDialog() == true)
+                            {
+                                student = studentWindow.Student;
+                                Student tmp = student.Copy();
+
+                                db.Students.Remove(student);
+                                selectedStudents.Remove(student);
+
+                                db.Students.Add(tmp);
+                                Students.Add(tmp);
+                                selectedStudents.Add(tmp);
+
+                                //tmp.LastName = student.LastName;
+                                //Students.Insert(Students.Count, student);
+                                //SelectedRooms.Insert(SelectedRooms.Count, room);
+
+                                //db.Students.Add(student);
+                                //SelectedStudents.Add(student);
+                                OnPropertyChanged("Students");
+                                OnPropertyChanged("SelectedStudents");
+                                db.SaveChanges();
+                            }
+                        }
+                    }));
+            }
+        }
 
         #endregion
     }
