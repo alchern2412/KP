@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace KP
 {
@@ -135,19 +137,39 @@ namespace KP
 
         public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom)
         {
-            Student = s;
-            Student.Room = selectedRoom;
-            this.faculties = faculties;
-            SelectedFirstName = Student.FirstName;
-            SelectedLastName = Student.LastName;
-            SelectedSecondName = Student.SecondName;
-            SelectedCourse = (int)Student.Course;
-            SelectedFaculty = Student.Faculty;
-            SelectedGroup = (int)Student.Group;
-            SelectedNote = Student.Note;
+            try
+            {
+                if(selectedRoom == null)
+                {
+                    throw new Exception("Ошибка! Не выбрана комната!");
+                }
+                if (s.FirstName != null)
+                {
+                    Student = s;
+                    Student.Room = selectedRoom;
+                    this.faculties = faculties;
+                    SelectedFirstName = Student.FirstName;
+                    SelectedLastName = Student.LastName;
+                    SelectedSecondName = Student.SecondName;
+                    SelectedCourse = (int)Student.Course;
+                    SelectedFaculty = Student.Faculty;
+                    SelectedGroup = (int)Student.Group;
+                    SelectedNote = Student.Note;
+                }
+                else
+                {
+                    Student = s;
+                    this.faculties = faculties;
+                    Student.Room = selectedRoom;
+                }
 
-            studentWindowView = new StudentWindowView();
-            studentWindowView.DataContext = this;
+                studentWindowView = new StudentWindowView();
+                studentWindowView.DataContext = this;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
 
