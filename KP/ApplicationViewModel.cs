@@ -104,9 +104,18 @@ namespace KP
             Floors = new ObservableCollection<Floor>(db.Floors.Local.ToBindingList().OrderBy(s => s.Number));
             selectedRooms = new ObservableCollection<Room>();
 
+            
+            
+
             //st1 = Students.First();
 
-
+            FloorSelectedIndex = 0;
+            RoomSelectedIndex = 0;
+            StudentSelectedIndex = 0;
+            OnPropertyChanged("SelectedRooms");
+            OnPropertyChanged("FloorSelectedIndex");
+            OnPropertyChanged("RoomSelectedIndex");
+            OnPropertyChanged("StudentSelectedIndex");
         }
 
         #region CommandsFloor
@@ -118,8 +127,60 @@ namespace KP
             get { return floorSelectedIndex; }
             set
             {
-                floorSelectedIndex = value;
-                OnPropertyChanged("FloorSelectedIndexr");
+                if (value == -1)
+                {
+                    floorSelectedIndex = 0;
+                }
+                else
+                {
+                    floorSelectedIndex = value;
+                }
+                
+                OnPropertyChanged("SelectedRooms");
+                OnPropertyChanged("FloorSelectedIndex");
+                RoomSelectedIndex = 0;
+            }
+        }
+
+        private int roomSelectedIndex;  // выбранная комната
+        public int RoomSelectedIndex
+        {
+            get { return roomSelectedIndex; }
+            set
+            {
+                if (value == -1)
+                {
+                    roomSelectedIndex = 0;
+                    
+                }
+                else
+                {
+                    roomSelectedIndex = value;
+                }
+                
+                OnPropertyChanged("RoomSelectedIndex");
+                StudentSelectedIndex = 0;
+            }
+        }
+
+        private int studentSelectedIndex;  // выбранный студент
+        public int StudentSelectedIndex
+        {
+            get { return studentSelectedIndex; }
+            set
+            {
+                if (value == -1)
+                {
+                    studentSelectedIndex = 0;
+
+                }
+                else
+                {
+                    studentSelectedIndex = value;
+                }
+                OnPropertyChanged("SelectedStudents");
+                OnPropertyChanged("StudentSelectedIndex");
+                OnPropertyChanged("SelectedStudent");
             }
         }
 
@@ -229,7 +290,9 @@ namespace KP
 
                             OnPropertyChanged("SelectedRooms");
                             OnPropertyChanged("Rooms");
-                            floorSelectedIndex = floorSelectedIndex - 1;
+                            FloorSelectedIndex = 0;
+                            RoomSelectedIndex = 0;
+                            StudentSelectedIndex = 0;
                             OnPropertyChanged("FloorSelectedIndex");
 
                             db.SaveChanges();
@@ -393,7 +456,7 @@ namespace KP
                                     db.Students.Remove(i);
                                 }
                             }
-                                                       
+                            RoomSelectedIndex = 0;                           
                             SelectedRooms.Remove(room);
                             db.Rooms.Remove(room);
                             db.SaveChanges();
@@ -528,8 +591,10 @@ namespace KP
                         {
                             //Students.Remove(student);
 
+
                             SelectedStudents.Remove(student);
                             db.Students.Remove(student);
+                            StudentSelectedIndex = 0;
                             db.SaveChanges();
                         }
                     },
