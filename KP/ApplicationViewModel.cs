@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace KP
 {
-    class ApplicationViewModel : INotifyPropertyChanged
+    public class ApplicationViewModel : INotifyPropertyChanged
     {
 
         #region PropertyChanged

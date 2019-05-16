@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:KP"
         mc:Ignorable="d"
         Title="KP" Height="600" Width="1000">
@@ -57,19 +58,19 @@
                 
             </Grid.ColumnDefinitions>
             <!--ЭТАЖИ-->
-            <Grid Grid.Column="0" Background="#FFFF8989">
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <ListBox Background="#FFFF8989" SelectedIndex="{Binding FloorSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  x:Name="floorsList" ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
-                    <ListBox.ItemContainerStyle>
+                <ListView SelectedIndex="{Binding FloorSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  x:Name="floorsList" ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
+                    <!--<ListBox.ItemContainerStyle>
                         <Style>
                             <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
                             
                         </Style>
-                    </ListBox.ItemContainerStyle>
+                    </ListBox.ItemContainerStyle>-->
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid MinWidth="100">
@@ -79,8 +80,8 @@
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                </ListBox>
-                <StackPanel Background="#FFFF8989" Grid.Row="1" Orientation="Horizontal">
+                </ListView>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <Button Margin="5" Width="30" Content="+" Command="{Binding AddFloorCommand}"/>
                     <Button Margin="5" Width="30" Content="-" Command="{Binding RemoveFloorCommand}" CommandParameter="{Binding SelectedFloor}"/>
                 </StackPanel>
@@ -88,20 +89,20 @@
             </Grid>
             
             <!--Комнаты-->
-            <Grid Background="#FFFF8989" x:Name="gridRooms" Grid.Column="1" Margin="5,0">
+            <Grid  x:Name="gridRooms" Grid.Column="1" Margin="5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <ListBox Background="#FFFF8989" x:Name="roomsList" ItemsSource="{Binding Path=SelectedRooms}" SelectedItem="{Binding SelectedRoomF}"  Grid.Column="2" >
-                        <ListBox.ItemContainerStyle>
+                    <ListView x:Name="roomsList" ItemsSource="{Binding Path=SelectedRooms}" SelectedItem="{Binding SelectedRoomF}"  Grid.Column="2" >
+                        <!--<ListBox.ItemContainerStyle>
                             <Style>
                                 <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
 
                             </Style>
-                        </ListBox.ItemContainerStyle>
+                        </ListBox.ItemContainerStyle>-->
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="5" MinWidth="170">
@@ -109,7 +110,7 @@
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
+                    </ListView>
                 </Grid>
                 <!--Кнопки комнат-->
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
@@ -119,12 +120,12 @@
             </Grid>
 
             <!-- Информация о людях -->
-            <Grid Background="#FFFF8989" Grid.Column="2" >
+            <Grid Grid.Column="2" >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>    
-                <ListBox Margin="0" Grid.Row="0" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" SelectedItem="{Binding SelectedStudent}" MinWidth="502">
+                <ListView Margin="0" Grid.Row="0" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" SelectedItem="{Binding SelectedStudent}" MinWidth="502">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -171,12 +172,12 @@
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
+                    </ListView>
                 <!--Кнопки студентов-->
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <Button Margin="5" Width="30" Content="+" Command="{Binding AddStudentCommand}"/>
-                        <Button Margin="5" Width="30" Content="-" Command="{Binding RemoveStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
-                        <Button Margin="5" Width="30" Content="Edit" Command="{Binding EditStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
+                        <Button Margin="5" Width="30" Command="{Binding AddStudentCommand}"/>
+                        <Button Margin="5" Width="30" Command="{Binding RemoveStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
+                        <Button Margin="5" Width="30" Command="{Binding EditStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
                     </StackPanel>
                 </Grid>
 
