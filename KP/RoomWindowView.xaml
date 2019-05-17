@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KP"
         mc:Ignorable="d"
-        Title="RoomWindowView" Height="110" Width="300">
+        Title="RoomWindowView" Height="138.667" Width="282.667">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="8" />
@@ -20,14 +20,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="0.3*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <TextBlock Text="Комната" />
 
         <TextBox Text="{Binding Number}" Grid.Column="1" />
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+        <StackPanel Grid.ColumnSpan="2"  HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Margin="16,0,17,0" Width="162">
             <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>

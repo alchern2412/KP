@@ -112,10 +112,6 @@ namespace KP
             FloorSelectedIndex = 0;
             RoomSelectedIndex = 0;
             StudentSelectedIndex = 0;
-            OnPropertyChanged("SelectedRooms");
-            OnPropertyChanged("FloorSelectedIndex");
-            OnPropertyChanged("RoomSelectedIndex");
-            OnPropertyChanged("StudentSelectedIndex");
         }
 
         #region CommandsFloor
@@ -160,6 +156,21 @@ namespace KP
                 
                 OnPropertyChanged("RoomSelectedIndex");
                 StudentSelectedIndex = 0;
+            }
+        }
+
+        private string searchText;
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                    searchText = value;
+                    OnPropertyChanged("SearchText");
+                RoomSelectedIndex = -1;
+                FloorSelectedIndex = -1;
+
+                SelectedStudents = new ObservableCollection<Student>(Students.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
             }
         }
 
@@ -614,7 +625,7 @@ namespace KP
                         Student student = obj as Student;
                         if (student != null)
                         {
-                            StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedRoomF);
+                            StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedStudent.Room);
                             if (studentWindow.studentWindowView.ShowDialog() == true)
                             {
                                 student = studentWindow.Student;

@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
        
         mc:Ignorable="d"
-        Title="KP" Height="600" Width="1000">
+        Title="KP" Height="600" Width="828">
 
     <!--<Window.DataContext>
         <local:RoomViewModel />
@@ -17,6 +17,7 @@
             <Setter Property="Button.Margin" Value="5 5 5 0"></Setter>
             <Setter Property="Button.Background" Value="Beige"/>
             <Setter Property="Button.FontSize" Value="50"/>
+
         </Style>
         <Style x:Key="btnRoom">
             <Setter Property="Button.MinHeight" Value="200"></Setter>
@@ -26,6 +27,7 @@
         <Style x:Key="txtBoxRoom" TargetType="TextBlock">
             <Setter Property="FontSize" Value="50"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+
         </Style>
         <Style x:Key="btnStudentInfo">
             <Setter Property="Button.Margin" Value="1"/>
@@ -33,10 +35,22 @@
             <!--<Setter Property="Button.HorizontalAlignment" Value="Left"/>
             <Setter Property="Button.Width" Value="auto"/>-->
         </Style>
+        <Style x:Key="btns" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+            <!--Margin="5" Width="40" Height="40" Padding="2"-->
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+        </Style>
+        <Style x:Key="btnsImages">
+            <Setter Property="Image.Width" Value="36"/>
+            <Setter Property="Image.Height" Value="40"/>
+        </Style>
     </Window.Resources>
     <DockPanel>
         <Menu x:Name="mainMenu" Height="30" DockPanel.Dock="Top">
-            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="File">
+            <MenuItem Height="{Binding
+                ElementName=mainMenu, Path=Height}" Header="File">
                 <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="New Project" ></MenuItem>
                 <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Open Project" >
                     <MenuItem Header="WinForms"></MenuItem>
@@ -49,54 +63,109 @@
                 <MenuItem Header="Добавить этаж"></MenuItem>
             </MenuItem>
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="View" ></MenuItem>
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}">
+                <MenuItem.Header>
+
+
+                            <Grid>
+                                
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+              Width="Auto" />
+                                    <ColumnDefinition
+              Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button 
+            Style="{DynamicResource MaterialDesignToolButton}">
+                                    <materialDesign:PackIcon
+              Kind="Magnify"
+              Opacity=".56" />
+                                </Button>
+                                <TextBox
+                                    
+                                    Text="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="1"
+
+            materialDesign:HintAssist.Hint="Build a search bar"
+                                            
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+
+                            </Grid>
+                        
+
+
+                    
+                </MenuItem.Header>
+            </MenuItem>
         </Menu>
+
+
+
+
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
                 <ColumnDefinition Width="2.5*"></ColumnDefinition>
                 <ColumnDefinition Width="6*"></ColumnDefinition>
-                
+
             </Grid.ColumnDefinitions>
             <!--ЭТАЖИ-->
+
             <Grid Grid.Column="0">
+
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
+                <Grid Background="#FFFAFAFA">
+                    <TextBlock HorizontalAlignment="Center">Этаж</TextBlock>
+                </Grid>
+                <ListBox Grid.Row="1" BorderThickness="1" BorderBrush="Gray" x:Name="floorsList" SelectedIndex="{Binding FloorSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
 
-                <ListView x:Name="floorsList" SelectedIndex="{Binding FloorSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
-                    <!--<ListBox.ItemContainerStyle>
-                        <Style>
-                            <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
-                            
-                        </Style>
-                    </ListBox.ItemContainerStyle>-->
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid MinWidth="100">
                                 <StackPanel HorizontalAlignment="Stretch">
-                                    <TextBlock Style="{StaticResource ResourceKey=txtBoxRoom}" Text="{Binding Path=Number}"/>
+                                    <TextBlock Style="{StaticResource ResourceKey=txtBoxRoom}" Text="{Binding Path=Number}">
+
+                                    </TextBlock>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-                </ListView>
-                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Button Margin="5" Width="30" Content="+" Command="{Binding AddFloorCommand}"/>
-                    <Button Margin="5" Width="30" Content="-" Command="{Binding RemoveFloorCommand}" CommandParameter="{Binding SelectedFloor}"/>
+                </ListBox>
+
+                <StackPanel  Grid.Row="2" Orientation="Horizontal" Background="#FFFAFAFA">
+                    <Button Style="{StaticResource btns}" Command="{Binding AddFloorCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="Add" />
+                    </Button>
+                    <Button Style="{StaticResource btns}" Command="{Binding RemoveFloorCommand}" CommandParameter="{Binding SelectedFloor}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="Minus" />
+                    </Button>
                 </StackPanel>
-                
+
             </Grid>
-            
+
+
             <!--Комнаты-->
-            <Grid  x:Name="gridRooms" Grid.Column="1" Margin="5,0">
+            <Grid x:Name="gridRooms" Grid.Column="1" Margin="5,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <ListView x:Name="roomsList" SelectedIndex="{Binding RoomSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=SelectedRooms}" SelectedItem="{Binding SelectedRoomF}"  Grid.Column="2" >
+                <Grid Background="#FFFAFAFA">
+                    <TextBlock HorizontalAlignment="Center">Комната</TextBlock>
+                </Grid>
+            
+            <Grid ShowGridLines="True" Grid.Row="1">
+                    <ListBox BorderThickness="1" BorderBrush="Gray" x:Name="roomsList" SelectedIndex="{Binding RoomSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=SelectedRooms}" SelectedItem="{Binding SelectedRoomF}"  Grid.Column="2" >
                         <!--<ListBox.ItemContainerStyle>
                             <Style>
                                 <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
@@ -110,31 +179,42 @@
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListView>
+                    </ListBox>
                 </Grid>
                 <!--Кнопки комнат-->
-                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Button x:Name="btnAddRoom" Margin="5" Width="30" Content="+" Command="{Binding AddRoomCommand}"/>
-                    <Button x:Name="btnDeleteRoom" Margin="5" Width="30" Content="-" Command="{Binding RemoveRoomCommand}" CommandParameter="{Binding SelectedRoomF}"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFFAFAFA">
+                    <Button x:Name="btnAddRoom" Style="{StaticResource btns}" Command="{Binding AddRoomCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="Add" />
+                    </Button>
+                    <Button x:Name="btnDeleteRoom" Style="{StaticResource btns}" Command="{Binding RemoveRoomCommand}" CommandParameter="{Binding SelectedRoomF}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="Minus"/>
+                    </Button>
                 </StackPanel>
             </Grid>
 
             <!-- Информация о людях -->
             <Grid Grid.Column="2" >
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
                     <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>    
-                <ListView Margin="0" Grid.Row="0" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" SelectedItem="{Binding SelectedStudent}" MinWidth="502">
-                        
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Background="#FFFAFAFA">
+                <TextBlock HorizontalAlignment="Center">Студент</TextBlock>
+                </Grid>
+                    <ListBox BorderThickness="1" BorderBrush="Gray" Margin="0" Grid.Row="1" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" SelectedItem="{Binding SelectedStudent}" MinWidth="502">
+
                     <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid Grid.Column="0" Background="#FFF3CBCB">
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:ColorZone
+                                      Mode="PrimaryLight"
+                                      Padding="16">
+                                    <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
                                             <RowDefinition/>
@@ -160,27 +240,35 @@
                                         <TextBlock Grid.Row="5" Margin="3">Факультет:</TextBlock>
                                         <TextBlock Grid.Row="5" Grid.Column="1" Margin="3" Text="{Binding Path=Faculty}"/>
                                     </Grid>
-                                    <Grid Grid.Column="1">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Margin="7,7,7,0" Grid.Row="0">Описание:</TextBlock>
-                                        <TextBlock Margin="7" Grid.Row="1" TextWrapping="Wrap" 
+                                </materialDesign:ColorZone>
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Margin="7,7,7,0" Grid.Row="0">Описание:</TextBlock>
+                                    <TextBlock Margin="7" Grid.Row="1" TextWrapping="Wrap" 
                          Text="{Binding Path=Note, TargetNullValue=[Описание не предоставлено]}"></TextBlock>
-                                    </Grid>
-                                    
                                 </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListView>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <!--Кнопки студентов-->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <Button Margin="5" Width="30" Command="{Binding AddStudentCommand}"/>
-                        <Button Margin="5" Width="30" Command="{Binding RemoveStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
-                        <Button Margin="5" Width="30" Command="{Binding EditStudentCommand}" CommandParameter="{Binding SelectedStudent}"/>
-                    </StackPanel>
-                </Grid>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFFAFAFA">
+                    <Button Style="{StaticResource btns}" Command="{Binding AddStudentCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="AccountMultiplePlus" />
+
+                    </Button>
+                    <Button Style="{StaticResource btns}" Command="{Binding RemoveStudentCommand}" CommandParameter="{Binding SelectedStudent}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="AccountMultipleMinus" />
+                    </Button>
+                    <Button Style="{StaticResource btns}" Command="{Binding EditStudentCommand}" CommandParameter="{Binding SelectedStudent}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="AccountEdit" />
+                    </Button>
+                </StackPanel>
+            </Grid>
 
         </Grid>
         <!--<Button Margin="5" Width="30" Content="+" Command="{Binding AddRoomCommand}"/>-->

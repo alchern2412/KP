@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KP"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="StudentWindowView" Height="300" Width="300">
+        Title="StudentWindowView" Width="292" Height="403">
     <Window.Resources>
+
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="8" />
         </Style>
@@ -14,45 +16,42 @@
             <Setter Property="Margin" Value="8" />
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="51*"/>
+            <ColumnDefinition Width="223*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="70"/>
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Фамилия" />
-        <TextBox Text="{Binding SelectedLastName, Mode=TwoWay}" Grid.Column="1" />
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Фамилия" Text="{Binding SelectedLastName, Mode=TwoWay}" Grid.ColumnSpan="2" />
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Имя" Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <TextBlock Grid.Row="1" Text="Имя" />
-        <TextBox Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay}" Grid.Column="1" />
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Отчество" Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <TextBlock Grid.Row="2" Text="Отчество" />
-        <TextBox Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay}" Grid.Column="1" />
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Курс" Grid.Row="3" Text="{Binding SelectedCourse, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <TextBlock Grid.Row="3" Text="Курс" />
-        <TextBox Grid.Row="3" Text="{Binding SelectedCourse, Mode=TwoWay}" Grid.Column="1" />
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Группа" Grid.Row="4" Text="{Binding SelectedGroup, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <TextBlock Grid.Row="4" Text="Группа" />
-        <TextBox Grid.Row="4" Text="{Binding SelectedGroup, Mode=TwoWay}" Grid.Column="1" />
+        <ComboBox  Margin="5,8,5,7" Grid.Row="5" SelectedItem="{Binding SelectedFaculty, Mode=TwoWay}" ItemsSource="{Binding Faculties, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" >
+        </ComboBox>
 
-        <TextBlock Grid.Row="5" Text="Факультет" />
-        
-            <ComboBox Grid.Row="5" Grid.Column="1" SelectedItem="{Binding SelectedFaculty, Mode=TwoWay}" ItemsSource="{Binding Faculties, UpdateSourceTrigger=PropertyChanged}"  />
-        
 
-        <TextBlock Grid.Row="6" Text="Характеристика" />
-        <TextBox Grid.Row="6" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.Column="1" />
+        <TextBox  Grid.Row="6" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.Column="1">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.Column="1" Margin="5,0,56,0">
             <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>

@@ -130,6 +130,20 @@ namespace KP
             }
         }
 
+        //int selectedIndexFaculty;
+        //public int SelectedIndexFaculty
+        //{
+        //    get { return selectedIndexFaculty; }
+        //    set
+        //    {
+        //        if (selectedIndexFaculty != null)
+        //        {
+                    
+        //        }
+        //        OnPropertyChanged("SelectedIndexFaculty");
+        //    }
+        //}
+
         public StudentWindowViewModel()
         {
 
