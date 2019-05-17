@@ -12,18 +12,14 @@ namespace KP
     using System;
     using System.Collections.Generic;
     
-    public partial class Faculty
+    public partial class DutyFloorWatch
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Faculty()
-        {
-            this.Students = new HashSet<Student>();
-        }
-    
         public int Id { get; set; }
-        public string FacultyName { get; set; }
+        public System.DateTime Date { get; set; }
+        public System.TimeSpan TimeStart { get; set; }
+        public System.TimeSpan TimeFinish { get; set; }
+        public string Type { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

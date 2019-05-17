@@ -4,15 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="74065047139442d582cd95faaa89efbe" Name="Diagram1" >
+      <Diagram DiagramId="74065047139442d582cd95faaa89efbe" Name="Diagram1" ZoomLevel="76" >
         <EntityTypeShape EntityType="Hostel.Student" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="Hostel.Room" Width="1.5" PointX="2.5" PointY="0.5" />
         <EntityTypeShape EntityType="Hostel.Faculty" Width="1.5" PointX="4.25" PointY="0.5" />
         <AssociationConnector Association="Hostel.StudentRoom" />
         <AssociationConnector Association="Hostel.StudentFaculty" />
-        <EntityTypeShape EntityType="Hostel.Floor" Width="1.5" PointX="6.75" PointY="0.875" />
+        <EntityTypeShape EntityType="Hostel.Floor" Width="1.5" PointX="6.25" PointY="0.5" />
         <AssociationConnector Association="Hostel.FloorRoom" ManuallyRouted="false" >
         </AssociationConnector>
+        <EntityTypeShape EntityType="Hostel.StudSovietMember" Width="1.5" PointX="0.625" PointY="5.125" />
+        <EntityTypeShape EntityType="Hostel.DutyFloorWatch" Width="1.5" PointX="3.375" PointY="3.75" />
+        <AssociationConnector Association="Hostel.StudentDutyWatch" />
+        <AssociationConnector Association="Hostel.StudentStudSovietMember" />
+        <EntityTypeShape EntityType="Hostel.StudSovietPosition" Width="1.5" PointX="3.25" PointY="6.25" />
+        <AssociationConnector Association="Hostel.StudSovietMemberStudSovietPosition" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

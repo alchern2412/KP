@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -629,7 +631,7 @@ namespace KP
                             if (studentWindow.studentWindowView.ShowDialog() == true)
                             {
                                 student = studentWindow.Student;
-                                Student tmp = student.Copy();
+                                Student tmp = (Student)student.Clone();
 
                                 db.Students.Remove(student);
                                 selectedStudents.Remove(student);
@@ -651,6 +653,25 @@ namespace KP
                         }
                     }));
             }
+        }
+
+        #endregion
+
+
+        #region ImageMethods
+
+        public byte[] imageToByteArray(System.Drawing.Image imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            return ms.ToArray();
+        }
+
+        public Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
         }
 
         #endregion

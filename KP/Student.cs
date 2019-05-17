@@ -14,6 +14,12 @@ namespace KP
     
     public partial class Student
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Student()
+        {
+            this.DutyFloorWatches = new HashSet<DutyFloorWatch>();
+        }
+    
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,25 +27,34 @@ namespace KP
         public string Note { get; set; }
         public Nullable<int> Course { get; set; }
         public Nullable<int> Group { get; set; }
+        public System.DateTime Birthday { get; set; }
+        public System.DateTime DateOfEntry { get; set; }
+        public System.DateTime DateOfDeparture { get; set; }
+        public byte[] Photo { get; set; }
     
         public virtual Room Room { get; set; }
         public virtual Faculty Faculty { get; set; }
-
-
-        /*Создает новый объект с такими же данными*/
-        public Student Copy()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DutyFloorWatch> DutyFloorWatches { get; set; }
+        public virtual StudSovietMember StudSovietMember { get; set; }
+        public object Clone()
         {
-            Student tmp = new Student();
-            tmp.LastName = this.LastName;
-            tmp.FirstName = this.FirstName;
-            tmp.SecondName = this.SecondName;
-            tmp.Note = this.Note;
-            tmp.Course = this.Course;
-            tmp.Group = this.Group;
-            tmp.Room = this.Room;
-            tmp.Faculty = this.Faculty;
-
-            return tmp;
+            return new Student
+            {
+                FirstName = this.FirstName,
+                SecondName = this.SecondName,
+                LastName = this.LastName,
+                Note = this.Note,
+                Course = this.Course,
+                Group = this.Group,
+                Birthday = this.Birthday,
+                DateOfEntry = this.DateOfEntry,
+                DateOfDeparture = this.DateOfDeparture,
+                Room = this.Room,
+                Faculty = this.Faculty,
+                DutyFloorWatches = this.DutyFloorWatches,
+                StudSovietMember = this.StudSovietMember
+            };
         }
     }
 }

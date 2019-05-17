@@ -61,6 +61,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.110.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -97,6 +98,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationViewModel.cs" />
+    <Compile Include="DutyFloorWatch.cs">
+      <DependentUpon>Hostel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Faculty.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
@@ -137,6 +141,12 @@
       <DependentUpon>StudentWindowView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StudentWindowViewModel.cs" />
+    <Compile Include="StudSovietMember.cs">
+      <DependentUpon>Hostel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StudSovietPosition.cs">
+      <DependentUpon>Hostel.tt</DependentUpon>
+    </Compile>
     <Page Include="FloorWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -205,7 +215,6 @@
     <Content Include="Hostel.edmx.sql" />
     <Content Include="Hostel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Hostel.cs</LastGenOutput>
       <DependentUpon>Hostel.edmx</DependentUpon>
     </Content>
   </ItemGroup>

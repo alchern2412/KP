@@ -208,14 +208,17 @@
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:ColorZone
-                                      Mode="PrimaryLight"
-                                      Padding="16">
+                                      Mode="Light"
+                                      Padding="12" Grid.Column="1">
+                                    
                                     <Grid>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition/>
                                             <RowDefinition/>
                                             <RowDefinition/>
                                             <RowDefinition/>
@@ -227,31 +230,50 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Row="0" Margin="3">Фамилия:</TextBlock>
-                                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="3" Text="{Binding Path=LastName}"/>
-                                        <TextBlock Grid.Row="1" Margin="3">Имя:</TextBlock>
-                                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="3" Text="{Binding Path=FirstName}"/>
-                                        <TextBlock Grid.Row="2" Margin="3">Отчество:</TextBlock>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="3" Text="{Binding Path=SecondName}"/>
-                                        <TextBlock Grid.Row="3" Margin="3">Курс:</TextBlock>
-                                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="3" Text="{Binding Path=Course}"/>
-                                        <TextBlock Grid.Row="4" Margin="3">Группа:</TextBlock>
-                                        <TextBlock Grid.Row="4" Grid.Column="1" Margin="3" Text="{Binding Path=Group}"/>
-                                        <TextBlock Grid.Row="5" Margin="3">Факультет:</TextBlock>
-                                        <TextBlock Grid.Row="5" Grid.Column="1" Margin="3" Text="{Binding Path=Faculty}"/>
+                                        <TextBlock Grid.Row="0" Margin="1">Фамилия:</TextBlock>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Margin="1" Text="{Binding Path=LastName}"/>
+                                        <TextBlock Grid.Row="1" Margin="1">Имя:</TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding Path=FirstName}"/>
+                                        <TextBlock Grid.Row="2" Margin="1">Отчество:</TextBlock>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="1" Text="{Binding Path=SecondName}"/>
+                                        <TextBlock Grid.Row="3" Margin="1">Курс:</TextBlock>
+                                        <TextBlock Grid.Row="3" Grid.Column="1" Margin="1" Text="{Binding Path=Course}"/>
+                                        <TextBlock Grid.Row="4" Margin="1">Группа:</TextBlock>
+                                        <TextBlock Grid.Row="4" Grid.Column="1" Margin="1" Text="{Binding Path=Group}"/>
+                                        <TextBlock Grid.Row="5" Margin="1">Факультет:</TextBlock>
+                                        <TextBlock Grid.Row="5" Grid.Column="1" Margin="1" Text="{Binding Path=Faculty}"/>
+                                        <TextBlock Grid.Row="6" Margin="1">Дата рождения:</TextBlock>
+                                        <TextBlock Grid.Row="6" Grid.Column="1" Margin="1" Text="{Binding Path=Birthday}"/>
                                     </Grid>
                                 </materialDesign:ColorZone>
-                                <Grid Grid.Column="1">
+                                <materialDesign:ColorZone Grid.Column="2" Mode="PrimaryLight"
+                                      Padding="12">
+                                <Grid >
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Margin="7,7,7,0" Grid.Row="0">Описание:</TextBlock>
-                                    <TextBlock Margin="7" Grid.Row="1" TextWrapping="Wrap" 
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Padding="0" Margin="1">Дата заселения:</TextBlock>
+                                    <TextBlock Grid.Row="0" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfEntry}"/>
+                                    <TextBlock Grid.Row="1" Padding="0" Margin="1">Дата выселения:</TextBlock>
+                                    <TextBlock Grid.Row="1" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfDeparture}"/>
+                                    <TextBlock Grid.Row="2" Padding="0" Margin="1">Должность:</TextBlock>
+                                    <TextBlock Grid.Row="2" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=StudSovietMember, TargetNullValue=[не явл. членом]}"/>
+                                    <TextBlock Grid.ColumnSpan="2" Margin="7,7,7,0" Grid.Row="3">Описание:</TextBlock>
+                                    <TextBlock Grid.ColumnSpan="2" Margin="7" Grid.Row="4" TextWrapping="Wrap" 
                          Text="{Binding Path=Note, TargetNullValue=[Описание не предоставлено]}"></TextBlock>
                                 </Grid>
-
+                                </materialDesign:ColorZone>
                             </Grid>
+                            
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
