@@ -12,7 +12,7 @@ namespace KP
     using System;
     using System.Collections.Generic;
     
-    public partial class Room
+    public partial class Room : ICloneable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Room()
@@ -23,11 +23,24 @@ namespace KP
         public int Id { get; set; }
         public int Number { get; set; }
         public Nullable<int> Bed { get; set; }
-        public string Nightstand { get; set; }
+        public Nullable<int> Nightstand { get; set; }
         public Nullable<int> Chair { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Students { get; set; }
         public virtual Floor Floor { get; set; }
+
+        public object Clone()
+        {
+            return new Room
+            {
+                Number = this.Number,
+                Bed = this.Bed,
+                Nightstand = this.Nightstand,
+                Chair = this.Chair,
+                Floor = this.Floor,
+                Students = this.Students,
+            };
+        }
     }
 }

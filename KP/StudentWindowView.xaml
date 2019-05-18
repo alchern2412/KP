@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:KP"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="StudentWindowView" Width="292" Height="403">
+        Title="StudentWindowView" Width="596" Height="403">
     <Window.Resources>
 
         <Style TargetType="TextBlock">
@@ -50,6 +50,9 @@
 
 
         <TextBox  Grid.Row="6" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.ColumnSpan="2" />
+        <!--<ComboBox
+            Grid.Row="1" Grid.Column="1"   ItemsSource="{Binding BedCount, UpdateSourceTrigger=PropertyChanged}" >
+        </ComboBox>-->
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.Column="1" Margin="5,0,56,0">
             <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>

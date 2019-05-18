@@ -96,6 +96,16 @@ namespace KP
             db.Rooms.Load();
             db.Floors.Load();
             db.Faculties.Load();
+
+            db.Faculties.Add(new Faculty { FacultyName = "ИТ"});
+            db.Faculties.Add(new Faculty { FacultyName = "ТОВ" });
+            db.Faculties.Add(new Faculty { FacultyName = "ХТИТ" });
+            db.Faculties.Add(new Faculty { FacultyName = "ПиМ" });
+            db.Faculties.Add(new Faculty { FacultyName = "ЛХ" });
+            db.Faculties.Add(new Faculty { FacultyName = "ИЭФ" });
+            db.Faculties.Add(new Faculty { FacultyName = "ТТЛП" });
+            db.SaveChanges();
+
             db.Students.Load();
 
             db.Rooms.OrderBy(s => s.Number);
@@ -421,6 +431,58 @@ namespace KP
                           }
                       }
                       catch(Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+
+
+
+                      //Room room = new Room();
+                      //Rooms.Insert(0, room);
+                      //SelectedRoomF = room;
+
+                      //db.Rooms.Add(room);
+                      //db.SaveChanges();
+                  }));
+            }
+        }
+
+        // команда редактирования комнаты
+        private RelayCommand editRoomCommand;
+        public RelayCommand EditRoomCommand
+        {
+            get
+            {
+                return editRoomCommand ??
+                  (editRoomCommand = new RelayCommand(obj =>
+                  {
+                      try
+                      {
+                          if(SelectedRoomF == null)
+                          {
+                              throw new Exception("Ошибка! Выберите комнату для редактирования!");
+                          }
+                          Room parm = SelectedRoomF;
+                          RoomWindowViewModel roomWindow = new RoomWindowViewModel(parm);
+                          if (roomWindow.roomWindowView.ShowDialog() == true)
+                          {
+                              db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Bed = parm.Bed;
+                              db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Chair = parm.Chair;
+                              db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Nightstand = parm.Nightstand;
+
+                              Rooms.Where(s => s.Number == parm.Number).ToList().First().Bed = parm.Bed;
+                              Rooms.Where(s => s.Number == parm.Number).ToList().First().Chair = parm.Chair;
+                              Rooms.Where(s => s.Number == parm.Number).ToList().First().Nightstand = parm.Nightstand;
+
+                              SelectedRoomF.Nightstand = parm.Nightstand;
+                              SelectedRoomF.Bed = parm.Bed;
+                              SelectedRoomF.Chair = parm.Chair;
+                              OnPropertyChanged("SelectedRoomF");
+
+                              db.SaveChanges();
+                          }
+                      }
+                      catch (Exception ex)
                       {
                           MessageBox.Show(ex.Message);
                       }

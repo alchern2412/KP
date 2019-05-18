@@ -189,6 +189,9 @@
                     <Button x:Name="btnDeleteRoom" Style="{StaticResource btns}" Command="{Binding RemoveRoomCommand}" CommandParameter="{Binding SelectedRoomF}">
                         <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="Minus"/>
                     </Button>
+                    <Button x:Name="btnEditRoom" Style="{StaticResource btns}" Command="{Binding EditRoomCommand}" CommandParameter="{Binding SelectedRoomF}">
+                        <materialDesign:PackIcon Style="{StaticResource ResourceKey=btnsImages}" Kind="PlaylistEdit"/>
+                    </Button>
                 </StackPanel>
             </Grid>
 
@@ -212,6 +215,10 @@
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <!--Изображение-->
+                                
+                                
+                                <!--Основная информация-->
                                 <materialDesign:ColorZone
                                       Mode="Light"
                                       Padding="12" Grid.Column="1">

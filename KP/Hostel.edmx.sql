@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/18/2019 00:55:32
+-- Date Created: 05/18/2019 02:31:55
 -- Generated from EDMX file: E:\4Sem\ООП\Курсовой\KP\KP\Hostel.edmx
 -- --------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE [dbo].[Rooms] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Number] int  NOT NULL,
     [Bed] int  NULL,
-    [Nightstand] nvarchar(max)  NULL,
+    [Nightstand] int  NULL,
     [Chair] int  NULL,
     [Floor_Id] int  NOT NULL
 );

@@ -126,6 +126,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Hostel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Hostel1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Hostel.tt</DependentUpon>
+    </Compile>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Room.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
@@ -216,6 +221,7 @@
     <Content Include="Hostel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Hostel.edmx</DependentUpon>
+      <LastGenOutput>Hostel1.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -187,6 +187,8 @@ namespace KP
 
         }
 
+
+
         //private RelayCommand accept1Command;
         //public RelayCommand Accept1Command
         //{

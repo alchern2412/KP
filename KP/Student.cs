@@ -12,7 +12,7 @@ namespace KP
     using System;
     using System.Collections.Generic;
     
-    public partial class Student
+    public partial class Student:ICloneable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
@@ -37,6 +37,7 @@ namespace KP
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DutyFloorWatch> DutyFloorWatches { get; set; }
         public virtual StudSovietMember StudSovietMember { get; set; }
+
         public object Clone()
         {
             return new Student

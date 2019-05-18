@@ -63,7 +63,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Number" Type="int" Nullable="false" />
     <Property Name="Bed" Type="int" Nullable="true" />
-    <Property Name="Nightstand" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Nightstand" Type="int" Nullable="true" />
     <Property Name="Chair" Type="int" Nullable="true" />
     <Property Name="Floor_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -247,7 +247,7 @@
           <NavigationProperty Name="Students" Relationship="Hostel.StudentRoom" FromRole="Room" ToRole="Student" />
           <NavigationProperty Name="Floor" Relationship="Hostel.FloorRoom" FromRole="Room" ToRole="Floor" />
           <Property Name="Bed" Type="Int32" Nullable="true" />
-          <Property Name="Nightstand" Type="String" Nullable="true" />
+          <Property Name="Nightstand" Type="Int32" Nullable="true" />
           <Property Name="Chair" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="Faculty">

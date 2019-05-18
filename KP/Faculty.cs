@@ -25,5 +25,10 @@ namespace KP
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Students { get; set; }
+
+        public override string ToString()
+        {
+            return FacultyName;
+        }
     }
 }

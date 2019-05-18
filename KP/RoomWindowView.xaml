@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:KP"
         mc:Ignorable="d"
-        Title="RoomWindowView" Height="138.667" Width="282.667">
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Title="RoomWindowView" Height="249.667" Width="358.667">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="8" />
@@ -18,17 +20,59 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+        
         <TextBlock Text="Комната" />
+        <TextBox IsEnabled="{Binding Flag, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Room.Number}" Grid.Column="1" />
 
-        <TextBox Text="{Binding Number}" Grid.Column="1" />
+        <TextBlock Grid.Row="1" Text="Кровать" />
+        <ComboBox VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedBedCount}" SelectedItem="{Binding Path=SelectedBedCount, Mode=TwoWay}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:Int32}">
+                    <sys:Int32>1</sys:Int32>
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>3</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                    <sys:Int32>5</sys:Int32>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
 
-        <StackPanel Grid.ColumnSpan="2"  HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="1" Margin="16,0,17,0" Width="162">
-            <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
+        <TextBlock Grid.Row="2" Text="Стул" />
+        <ComboBox SelectedIndex="{Binding SelectedChairCount}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" SelectedItem="{Binding Path=SelectedChairCount, Mode=TwoWay}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:Int32}">
+                    <sys:Int32>1</sys:Int32>
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>3</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                    <sys:Int32>5</sys:Int32>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
+
+        <TextBlock Grid.Row="3" Text="Тумбочка" />
+        <ComboBox SelectedIndex="{Binding SelectedNightstandCount}" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" SelectedItem="{Binding Path=SelectedNightstandCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:Int32}">
+                    <sys:Int32>1</sys:Int32>
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>3</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                    <sys:Int32>5</sys:Int32>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
+
+        <StackPanel Grid.ColumnSpan="2"  HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="4" Margin="16,0,17,0" Width="162">
+            <Button Click="Button_Click" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>
     </Grid>
