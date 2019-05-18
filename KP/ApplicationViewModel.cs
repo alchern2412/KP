@@ -72,6 +72,39 @@ namespace KP
                 OnPropertyChanged("Faculties");
             }
         }
+
+        public ObservableCollection<StudSovietPosition> studsovietPositions;
+        public ObservableCollection<StudSovietPosition> StudsovietPositions
+        {
+            get { return studsovietPositions; }
+            set
+            {
+                studsovietPositions = value;
+                OnPropertyChanged("StudsovietPositions");
+            }
+        }
+
+        public ObservableCollection<StudSovietMember> studsovietMembers;
+        public ObservableCollection<StudSovietMember> StudsovietMembers
+        {
+            get { return studsovietMembers; }
+            set
+            {
+                studsovietMembers = value;
+                OnPropertyChanged("StudsovietMembers");
+            }
+        }
+
+        public ObservableCollection<DutyFloorWatch> dutyFloorWatches;
+        public ObservableCollection<DutyFloorWatch> DutyFloorWatches
+        {
+            get { return dutyFloorWatches; }
+            set
+            {
+                dutyFloorWatches = value;
+                OnPropertyChanged("DutyFloorWatches");
+            }
+        }
         #endregion
 
         ////tmp
@@ -96,24 +129,37 @@ namespace KP
             db.Rooms.Load();
             db.Floors.Load();
             db.Faculties.Load();
-
-            db.Faculties.Add(new Faculty { FacultyName = "ИТ"});
-            db.Faculties.Add(new Faculty { FacultyName = "ТОВ" });
-            db.Faculties.Add(new Faculty { FacultyName = "ХТИТ" });
-            db.Faculties.Add(new Faculty { FacultyName = "ПиМ" });
-            db.Faculties.Add(new Faculty { FacultyName = "ЛХ" });
-            db.Faculties.Add(new Faculty { FacultyName = "ИЭФ" });
-            db.Faculties.Add(new Faculty { FacultyName = "ТТЛП" });
-            db.SaveChanges();
+            db.StudSovietPositions.Load();
+            db.StudSovietMembers.Load();
+            db.DutyFloorWatches.Load();
 
             db.Students.Load();
 
+            //db.Faculties.Add(new Faculty { FacultyName = "ИТ"});
+            //db.Faculties.Add(new Faculty { FacultyName = "ТОВ" });
+            //db.Faculties.Add(new Faculty { FacultyName = "ХТИТ" });
+            //db.Faculties.Add(new Faculty { FacultyName = "ПиМ" });
+            //db.Faculties.Add(new Faculty { FacultyName = "ЛХ" });
+            //db.Faculties.Add(new Faculty { FacultyName = "ИЭФ" });
+            //db.Faculties.Add(new Faculty { FacultyName = "ТТЛП" });
+            db.SaveChanges();
+
+            
+
             db.Rooms.OrderBy(s => s.Number);
 
+            
+            /*Выгрузка данных из бд в местные коллекции*/
             Rooms = new ObservableCollection<Room>(db.Rooms.Local.ToBindingList().OrderBy(s => s.Number));
             Faculties = new ObservableCollection<Faculty>(db.Faculties.Local.ToBindingList());
             Students = new ObservableCollection<Student>(db.Students.Local.ToBindingList());
             Floors = new ObservableCollection<Floor>(db.Floors.Local.ToBindingList().OrderBy(s => s.Number));
+
+            StudsovietPositions = new ObservableCollection<StudSovietPosition>(db.StudSovietPositions.Local.ToBindingList());
+            StudsovietMembers = new ObservableCollection<StudSovietMember>(db.StudSovietMembers.Local.ToBindingList());
+            DutyFloorWatches = new ObservableCollection<DutyFloorWatch>(db.DutyFloorWatches.Local.ToBindingList());
+
+
             selectedRooms = new ObservableCollection<Room>();
 
             
@@ -598,6 +644,8 @@ namespace KP
             }
         }
 
+
+
         // команда добавления нового объекта
         private RelayCommand addStudentCommand;
         public RelayCommand AddStudentCommand
@@ -609,7 +657,7 @@ namespace KP
                   {
                       try
                       {
-                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(new Student(), Faculties, SelectedRoomF);
+                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(new Student(), Faculties, SelectedRoomF, StudsovietPositions);
                           if (studentWindow.studentWindowView.ShowDialog() == true)
                           {
                               Student student = studentWindow.Student;
@@ -686,32 +734,40 @@ namespace KP
                 return editStudentCommand ??
                     (editStudentCommand = new RelayCommand(obj =>
                     {
-                        Student student = obj as Student;
-                        if (student != null)
+                        try
                         {
-                            StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedStudent.Room);
-                            if (studentWindow.studentWindowView.ShowDialog() == true)
+                            Student student = obj as Student;
+                            if (student != null)
                             {
-                                student = studentWindow.Student;
-                                Student tmp = (Student)student.Clone();
+                                StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedStudent.Room, StudsovietPositions);
+                                if (studentWindow.studentWindowView.ShowDialog() == true)
+                                {
+                                    student = studentWindow.Student;
+                                    Student tmp = (Student)student.Clone();
 
-                                db.Students.Remove(student);
-                                selectedStudents.Remove(student);
+                                    db.Students.Remove(student);
+                                    selectedStudents.Remove(student);
+                                    Students.Remove(student);
 
-                                db.Students.Add(tmp);
-                                Students.Add(tmp);
-                                selectedStudents.Add(tmp);
+                                    db.Students.Add(tmp);
+                                    Students.Add(tmp);
+                                    selectedStudents.Add(tmp);
 
-                                //tmp.LastName = student.LastName;
-                                //Students.Insert(Students.Count, student);
-                                //SelectedRooms.Insert(SelectedRooms.Count, room);
+                                    //tmp.LastName = student.LastName;
+                                    //Students.Insert(Students.Count, student);
+                                    //SelectedRooms.Insert(SelectedRooms.Count, room);
 
-                                //db.Students.Add(student);
-                                //SelectedStudents.Add(student);
-                                OnPropertyChanged("Students");
-                                OnPropertyChanged("SelectedStudents");
-                                db.SaveChanges();
+                                    //db.Students.Add(student);
+                                    //SelectedStudents.Add(student);
+                                    OnPropertyChanged("Students");
+                                    OnPropertyChanged("SelectedStudents");
+                                    db.SaveChanges();
+                                }
                             }
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
                         }
                     }));
             }
@@ -720,6 +776,7 @@ namespace KP
         #endregion
 
 
+        // работа с фотографией
         #region ImageMethods
 
         public byte[] imageToByteArray(System.Drawing.Image imageIn)

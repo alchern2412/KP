@@ -19,5 +19,10 @@ namespace KP
         public string Description { get; set; }
     
         public virtual StudSovietMember StudSovietMember { get; set; }
+
+        public override string ToString()
+        {
+            return Position;
+        }
     }
 }

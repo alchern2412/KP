@@ -50,8 +50,8 @@
     <Property Name="Course" Type="int" Nullable="true" />
     <Property Name="Group" Type="int" Nullable="true" />
     <Property Name="Birthday" Type="datetime" Nullable="false" />
-    <Property Name="DateOfEntry" Type="datetime" Nullable="false" />
-    <Property Name="DateOfDeparture" Type="datetime" Nullable="false" />
+    <Property Name="DateOfEntry" Type="datetime" Nullable="true" />
+    <Property Name="DateOfDeparture" Type="datetime" Nullable="true" />
     <Property Name="Photo" Type="varbinary(max)" Nullable="true" />
     <Property Name="Room_Id" Type="int" Nullable="false" />
     <Property Name="Faculty_Id" Type="int" Nullable="false" />
@@ -232,8 +232,8 @@
           <NavigationProperty Name="Room" Relationship="Hostel.StudentRoom" FromRole="Student" ToRole="Room" />
           <NavigationProperty Name="Faculty" Relationship="Hostel.StudentFaculty" FromRole="Student" ToRole="Faculty" />
           <Property Name="Birthday" Type="DateTime" Nullable="false" />
-          <Property Name="DateOfEntry" Type="DateTime" Nullable="false" />
-          <Property Name="DateOfDeparture" Type="DateTime" Nullable="false" />
+          <Property Name="DateOfEntry" Type="DateTime" Nullable="true" />
+          <Property Name="DateOfDeparture" Type="DateTime" Nullable="true" />
           <NavigationProperty Name="DutyFloorWatches" Relationship="Hostel.StudentDutyWatch" FromRole="Student" ToRole="DutyWatch" />
           <NavigationProperty Name="StudSovietMember" Relationship="Hostel.StudentStudSovietMember" FromRole="Student" ToRole="StudSovietMember" />
           <Property Name="Photo" Type="Binary" Nullable="true" />

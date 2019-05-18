@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="74065047139442d582cd95faaa89efbe" Name="Diagram1" ZoomLevel="76" >
+      <Diagram DiagramId="74065047139442d582cd95faaa89efbe" Name="Diagram1" ZoomLevel="85" >
         <EntityTypeShape EntityType="Hostel.Student" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="Hostel.Room" Width="1.5" PointX="2.5" PointY="0.5" />
         <EntityTypeShape EntityType="Hostel.Faculty" Width="1.5" PointX="4.25" PointY="0.5" />

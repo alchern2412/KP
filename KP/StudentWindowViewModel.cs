@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace KP
 {
@@ -31,7 +34,31 @@ namespace KP
             }
         }
 
-        string selectedLastName;
+        /*Список должностей*/
+        ObservableCollection<StudSovietPosition> studsovitePositions;
+        public ObservableCollection<StudSovietPosition> StudsovitePositions
+        {
+            get { return studsovitePositions; }
+            set
+            {
+                studsovitePositions = value;
+                OnPropertyChanged("StudsovitePositions");
+            }
+        }
+
+        /*Список студсовета*/
+        ObservableCollection<StudSovietMember> studsoviteMembers;
+        public ObservableCollection<StudSovietMember> StudsoviteMembers
+        {
+            get { return studsoviteMembers; }
+            set
+            {
+                studsoviteMembers = value;
+                OnPropertyChanged("StudsoviteMembers");
+            }
+        }
+
+        string selectedLastName;    // имя
         public string SelectedLastName
         {
             get { return selectedLastName; }
@@ -46,7 +73,7 @@ namespace KP
             }
         }
 
-        string selectedFirstName;
+        string selectedFirstName;   // фамилия
         public string SelectedFirstName
         {
             get { return selectedFirstName; }
@@ -76,7 +103,7 @@ namespace KP
             }
         }
 
-        int selectedCourse;
+        int selectedCourse; // курс
         public int SelectedCourse
         {
             get { return selectedCourse; }
@@ -88,7 +115,7 @@ namespace KP
             }
         }
 
-        int selectedGroup;
+        int selectedGroup; // группа
         public int SelectedGroup
         {
             get { return selectedGroup; }
@@ -100,7 +127,7 @@ namespace KP
             }
         }
         
-        string selectedNote;
+        string selectedNote; // хар-ка
         public string SelectedNote
         {
             get { return selectedNote; }
@@ -115,7 +142,7 @@ namespace KP
             }
         }
 
-        Faculty selectedFaculty;
+        Faculty selectedFaculty; // факультет
         public Faculty SelectedFaculty
         {
             get { return selectedFaculty; }
@@ -130,6 +157,54 @@ namespace KP
             }
         }
 
+
+        private DateTime selectedBirthday;  // ДР
+        public DateTime SelectedBirthday {
+            get { return selectedBirthday; }
+            set
+            {
+                selectedBirthday = value;
+                Student.Birthday = selectedBirthday;
+                OnPropertyChanged("SelectedBirthday");
+            }
+        }
+
+        private DateTime selectedDateOfEntry;   // дата заселения
+        public DateTime SelectedDateOfEntry {
+            get { return selectedDateOfEntry; }
+            set
+            {
+                    selectedDateOfEntry = (DateTime)value;
+                Student.DateOfEntry = selectedDateOfEntry;
+                OnPropertyChanged("SelectedDateOfEntry");
+            }
+        }
+
+        private DateTime selectedDateOfDeparture;   // дата выселения
+        public DateTime SelectedDateOfDeparture {
+            get { return selectedDateOfDeparture; }
+            set
+            {
+                    selectedDateOfDeparture = (DateTime)value;
+                Student.DateOfDeparture = selectedDateOfDeparture;
+                OnPropertyChanged("SelectedDateOfDeparture");
+            }
+        }
+
+
+        private DateTime selectedDateOfEntryMember;   // дата выселения
+        public DateTime SelectedDateOfEntryMember
+        {
+            get { return selectedDateOfEntryMember; }
+            set
+            {
+                selectedDateOfEntryMember = (DateTime)value;
+                Student.DateOfDeparture = selectedDateOfEntryMember;
+                OnPropertyChanged("SelectedDateOfEntryMember");
+            }
+        }
+
+
         //int selectedIndexFaculty;
         //public int SelectedIndexFaculty
         //{
@@ -138,7 +213,7 @@ namespace KP
         //    {
         //        if (selectedIndexFaculty != null)
         //        {
-                    
+
         //        }
         //        OnPropertyChanged("SelectedIndexFaculty");
         //    }
@@ -149,7 +224,7 @@ namespace KP
 
         }
 
-        public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom)
+        public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom, ObservableCollection<StudSovietPosition> StudsovietPositions)
         {
             try
             {
@@ -159,6 +234,8 @@ namespace KP
                 }
                 if (s.FirstName != null)
                 {
+                    Thread.CurrentThread.CurrentCulture = new CultureInfo("RU-RU");
+                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("RU-RU");
                     Student = s;
                     Student.Room = selectedRoom;
                     this.faculties = faculties;
@@ -169,16 +246,34 @@ namespace KP
                     SelectedFaculty = Student.Faculty;
                     SelectedGroup = (int)Student.Group;
                     SelectedNote = Student.Note;
+
+                    SelectedDateOfDeparture = (DateTime)Student.DateOfDeparture;
+                    SelectedDateOfEntry = (DateTime)Student.DateOfEntry;
+                    if (Student.StudSovietMember != null)
+                    {
+                        SelectedDateOfEntryMember = (DateTime)Student.StudSovietMember.DateOfEntry;
+                    }
+                    SelectedBirthday = (DateTime)Student.Birthday;
+
                 }
                 else
                 {
                     Student = s;
                     this.faculties = faculties;
+                    this.StudsovitePositions = StudsovietPositions;
                     Student.Room = selectedRoom;
+
+                    SelectedDateOfDeparture = DateTime.Now;
+                    SelectedDateOfEntry = DateTime.Now;
+                    SelectedDateOfEntryMember = DateTime.Now;
+                    SelectedBirthday = DateTime.Now;
                 }
 
+
                 studentWindowView = new StudentWindowView();
+                studentWindowView.Language = XmlLanguage.GetLanguage("ru-RU");
                 studentWindowView.DataContext = this;
+                
             }
             catch(Exception ex)
             {

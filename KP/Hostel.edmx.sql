@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/18/2019 02:31:55
+-- Date Created: 05/18/2019 16:07:21
 -- Generated from EDMX file: E:\4Sem\ООП\Курсовой\KP\KP\Hostel.edmx
 -- --------------------------------------------------
 
@@ -76,8 +76,8 @@ CREATE TABLE [dbo].[Students] (
     [Course] int  NULL,
     [Group] int  NULL,
     [Birthday] datetime  NOT NULL,
-    [DateOfEntry] datetime  NOT NULL,
-    [DateOfDeparture] datetime  NOT NULL,
+    [DateOfEntry] datetime  NULL,
+    [DateOfDeparture] datetime  NULL,
     [Photo] varbinary(max)  NULL,
     [Room_Id] int  NOT NULL,
     [Faculty_Id] int  NOT NULL

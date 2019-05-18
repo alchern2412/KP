@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KP"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib"
+
         mc:Ignorable="d"
-        Title="StudentWindowView" Width="596" Height="403">
+        Title="StudentWindowView" Width="401" Height="514">
     <Window.Resources>
 
         <Style TargetType="TextBlock">
@@ -18,45 +20,129 @@
     </Window.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="51*"/>
-            <ColumnDefinition Width="223*"/>
+            <ColumnDefinition Width="148*" />
+            <ColumnDefinition Width="235*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="55"/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition />
             <RowDefinition Height="70"/>
-            <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Фамилия" Text="{Binding SelectedLastName, Mode=TwoWay}" Grid.ColumnSpan="2" />
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Имя" Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Отчество" Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay}" Grid.ColumnSpan="2" />
+        <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Фамилия" Text="{Binding SelectedLastName, Mode=TwoWay}"  />
+        <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Имя" Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay}"  />
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Курс" Grid.Row="3" Text="{Binding SelectedCourse, Mode=TwoWay}" Grid.ColumnSpan="2" />
+        <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="Отчество" Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay}"  />
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Группа" Grid.Row="4" Text="{Binding SelectedGroup, Mode=TwoWay}" Grid.ColumnSpan="2" />
 
-        <ComboBox  Margin="5,8,5,7" Grid.Row="5" SelectedItem="{Binding SelectedFaculty, Mode=TwoWay}" ItemsSource="{Binding Faculties, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" >
+
+        <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+              materialDesign:HintAssist.Hint="Курс" VerticalAlignment="Center"  Grid.Row="3" Grid.Column="1" SelectedItem="{Binding Path=SelectedCourse, Mode=TwoWay}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:Int32}">
+                    <sys:Int32>1</sys:Int32>
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>3</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                    <sys:Int32>5</sys:Int32>
+                </x:Array>
+            </ComboBox.ItemsSource>
         </ComboBox>
 
+        <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+              materialDesign:HintAssist.Hint="Группа" VerticalAlignment="Center"  Grid.Row="4" Grid.Column="1" SelectedItem="{Binding Path=SelectedGroup, Mode=TwoWay}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:Int32}">
+                    <sys:Int32>1</sys:Int32>
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>3</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                    <sys:Int32>5</sys:Int32>
+                    <sys:Int32>6</sys:Int32>
+                    <sys:Int32>7</sys:Int32>
+                    <sys:Int32>8</sys:Int32>
+                    <sys:Int32>9</sys:Int32>
+                    <sys:Int32>10</sys:Int32>
+                    <sys:Int32>11</sys:Int32>
+                    <sys:Int32>12</sys:Int32>
+                    <sys:Int32>13</sys:Int32>
+                    
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
 
-        <TextBox  Grid.Row="6" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.ColumnSpan="2" />
+        <ComboBox Grid.Column="1" VerticalAlignment="Bottom" Grid.Row="5" SelectedItem="{Binding SelectedFaculty, Mode=TwoWay}" ItemsSource="{Binding Faculties, UpdateSourceTrigger=PropertyChanged}" />
+
+        <DatePicker
+             VerticalAlignment="Bottom"
+              materialDesign:HintAssist.Hint="Дата рождения" Grid.Row="6" Grid.Column="1" Text="{Binding SelectedBirthday, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
+
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Характеристика" Grid.Row="8" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.ColumnSpan="2" />
         <!--<ComboBox
             Grid.Row="1" Grid.Column="1"   ItemsSource="{Binding BedCount, UpdateSourceTrigger=PropertyChanged}" >
         </ComboBox>-->
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="7" Grid.Column="1" Margin="5,0,56,0">
+        <ComboBox Margin="2, 0, 10, 0" Grid.Column="0" VerticalAlignment="Bottom"
+               Grid.Row="7" ItemsSource="{Binding StudsovietPositions, Mode=TwoWay}"  />
+
+        <TextBlock Grid.Row="6" Text="Должность" VerticalAlignment="Bottom" Margin="0"/>
+
+        <DatePicker
+            VerticalAlignment="Bottom"
+             Grid.Column="1"
+              materialDesign:HintAssist.Hint="Дата вступления" Grid.Row="7" Text="{Binding SelectedDateOfEntryMember, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="2" Margin="36,0,37,0" Width="162">
             <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>
+        
+        
+        
+        <!--photo-->
+        <Grid Grid.RowSpan="4" Margin="5">
+            <materialDesign:ColorZone
+        Mode="Light"
+        VerticalAlignment="Stretch">
+                <materialDesign:PackIcon
+                      Kind="AccountCircle"
+                      Height="128"
+                      Width="128"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center" />
+                </materialDesign:ColorZone>
+            <Image Height="128"
+                      Width="128"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                   Source="E:\4Sem\ООП\Курсовой\KP\KP\obj\Debug\13.jpg">
+                    
+            </Image>
+        </Grid>
+
+       
+        <DatePicker
+            Margin="2, 0, 10, 0"
+             VerticalAlignment="Bottom"
+              materialDesign:HintAssist.Hint="Дата заселения" Grid.Row="4" Text="{Binding SelectedDateOfEntry, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
+        <DatePicker
+            Margin="2, 0, 10, 0"
+             VerticalAlignment="Bottom"
+              materialDesign:HintAssist.Hint="Дата выселения" Grid.Row="5" Text="{Binding SelectedDateOfDeparture, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
+        
     </Grid>
 </Window>

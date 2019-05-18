@@ -12,7 +12,7 @@ namespace KP
     using System;
     using System.Collections.Generic;
     
-    public partial class Student:ICloneable
+    public partial class Student : ICloneable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
@@ -28,8 +28,8 @@ namespace KP
         public Nullable<int> Course { get; set; }
         public Nullable<int> Group { get; set; }
         public System.DateTime Birthday { get; set; }
-        public System.DateTime DateOfEntry { get; set; }
-        public System.DateTime DateOfDeparture { get; set; }
+        public Nullable<System.DateTime> DateOfEntry { get; set; }
+        public Nullable<System.DateTime> DateOfDeparture { get; set; }
         public byte[] Photo { get; set; }
     
         public virtual Room Room { get; set; }
@@ -56,6 +56,11 @@ namespace KP
                 DutyFloorWatches = this.DutyFloorWatches,
                 StudSovietMember = this.StudSovietMember
             };
+        }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {SecondName} {LastName}" ;
         }
     }
 }
