@@ -88,15 +88,38 @@
               materialDesign:HintAssist.Hint="Дата рождения" Grid.Row="6" Grid.Column="1" Text="{Binding SelectedBirthday, Mode=TwoWay}"
               Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Характеристика" Grid.Row="8" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.ColumnSpan="2" />
+        <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+              materialDesign:HintAssist.Hint="Пол" VerticalAlignment="Center"  Grid.Row="8" Grid.Column="0" SelectedItem="{Binding Path=SelectedSex, Mode=TwoWay}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:String}">
+                    <sys:String>Мужской</sys:String>
+                    <sys:String>Женский</sys:String>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
+
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Характеристика" Grid.Row="8" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.Column="1" />
         <!--<ComboBox
             Grid.Row="1" Grid.Column="1"   ItemsSource="{Binding BedCount, UpdateSourceTrigger=PropertyChanged}" >
         </ComboBox>-->
 
-        <ComboBox Margin="2, 0, 10, 0" Grid.Column="0" VerticalAlignment="Bottom"
-               Grid.Row="7" ItemsSource="{Binding StudsovietPositions, Mode=TwoWay}"  />
+        <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+              materialDesign:HintAssist.Hint="Должность" VerticalAlignment="Center"  Grid.Row="7" Grid.Column="0" SelectedItem="{Binding Path=StudSovietPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:String}">
+                    <sys:String>Председатель</sys:String>
+                    <sys:String>Зампредседателя</sys:String>
+                    <sys:String>Староста этажа</sys:String>
+                    <sys:String>Зам. старосты этажа</sys:String>
+                    <sys:String>Культурно-массовый сектор</sys:String>
+                    <sys:String>Жилищно-бытовой сектор</sys:String>
+                    <sys:String>Трудовой сектор</sys:String>
+                    <sys:String>Спорт сектор</sys:String>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
 
-        <TextBlock Grid.Row="6" Text="Должность" VerticalAlignment="Bottom" Margin="0"/>
+        <!--<TextBlock G--><!--rid.Row="6" Text="Должность" VerticalAlignment="Bottom" Margin="0"/>-->
 
         <DatePicker
             VerticalAlignment="Bottom"
@@ -113,23 +136,14 @@
         
         <!--photo-->
         <Grid Grid.RowSpan="4" Margin="5">
-            <materialDesign:ColorZone
-        Mode="Light"
-        VerticalAlignment="Stretch">
-                <materialDesign:PackIcon
-                      Kind="AccountCircle"
-                      Height="128"
-                      Width="128"
-                      VerticalAlignment="Center"
-                      HorizontalAlignment="Center" />
-                </materialDesign:ColorZone>
-            <Image Height="128"
+            <Button Command="{Binding OpenCommand}" Height="Auto">
+                <Image Height="128"
                       Width="128"
                       VerticalAlignment="Center"
                       HorizontalAlignment="Center"
-                   Source="E:\4Sem\ООП\Курсовой\KP\KP\obj\Debug\13.jpg">
-                    
-            </Image>
+                   Source="{Binding ImagePath}">
+                </Image>
+            </Button>
         </Grid>
 
        

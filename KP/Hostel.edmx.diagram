@@ -17,8 +17,6 @@
         <EntityTypeShape EntityType="Hostel.DutyFloorWatch" Width="1.5" PointX="3.375" PointY="3.75" />
         <AssociationConnector Association="Hostel.StudentDutyWatch" />
         <AssociationConnector Association="Hostel.StudentStudSovietMember" />
-        <EntityTypeShape EntityType="Hostel.StudSovietPosition" Width="1.5" PointX="3.25" PointY="6.25" />
-        <AssociationConnector Association="Hostel.StudSovietMemberStudSovietPosition" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

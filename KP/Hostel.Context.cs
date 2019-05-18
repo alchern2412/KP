@@ -31,6 +31,5 @@ namespace KP
         public virtual DbSet<Floor> Floors { get; set; }
         public virtual DbSet<StudSovietMember> StudSovietMembers { get; set; }
         public virtual DbSet<DutyFloorWatch> DutyFloorWatches { get; set; }
-        public virtual DbSet<StudSovietPosition> StudSovietPositions { get; set; }
     }
 }

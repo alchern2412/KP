@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/18/2019 16:07:21
+-- Date Created: 05/18/2019 22:30:27
 -- Generated from EDMX file: E:\4Sem\ООП\Курсовой\KP\KP\Hostel.edmx
 -- --------------------------------------------------
 
@@ -32,9 +32,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_StudentStudSovietMember]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[StudSovietMembers] DROP CONSTRAINT [FK_StudentStudSovietMember];
 GO
-IF OBJECT_ID(N'[dbo].[FK_StudSovietMemberStudSovietPosition]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[StudSovietMembers] DROP CONSTRAINT [FK_StudSovietMemberStudSovietPosition];
-GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -58,9 +55,6 @@ GO
 IF OBJECT_ID(N'[dbo].[DutyFloorWatches]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DutyFloorWatches];
 GO
-IF OBJECT_ID(N'[dbo].[StudSovietPositions]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[StudSovietPositions];
-GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -78,7 +72,8 @@ CREATE TABLE [dbo].[Students] (
     [Birthday] datetime  NOT NULL,
     [DateOfEntry] datetime  NULL,
     [DateOfDeparture] datetime  NULL,
-    [Photo] varbinary(max)  NULL,
+    [Photo] nvarchar(max)  NULL,
+    [Sex] nvarchar(max)  NOT NULL,
     [Room_Id] int  NOT NULL,
     [Faculty_Id] int  NOT NULL
 );
@@ -113,8 +108,8 @@ GO
 CREATE TABLE [dbo].[StudSovietMembers] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [DateOfEntry] datetime  NULL,
-    [Student_Id] int  NOT NULL,
-    [StudSovietPosition_Id] int  NOT NULL
+    [Position] nvarchar(max)  NULL,
+    [Student_Id] int  NOT NULL
 );
 GO
 
@@ -126,14 +121,6 @@ CREATE TABLE [dbo].[DutyFloorWatches] (
     [TimeFinish] time  NOT NULL,
     [Type] nvarchar(max)  NOT NULL,
     [Student_Id] int  NOT NULL
-);
-GO
-
--- Creating table 'StudSovietPositions'
-CREATE TABLE [dbo].[StudSovietPositions] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Position] nvarchar(max)  NOT NULL,
-    [Description] nvarchar(max)  NULL
 );
 GO
 
@@ -174,12 +161,6 @@ GO
 -- Creating primary key on [Id] in table 'DutyFloorWatches'
 ALTER TABLE [dbo].[DutyFloorWatches]
 ADD CONSTRAINT [PK_DutyFloorWatches]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'StudSovietPositions'
-ALTER TABLE [dbo].[StudSovietPositions]
-ADD CONSTRAINT [PK_StudSovietPositions]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -260,21 +241,6 @@ GO
 CREATE INDEX [IX_FK_StudentStudSovietMember]
 ON [dbo].[StudSovietMembers]
     ([Student_Id]);
-GO
-
--- Creating foreign key on [StudSovietPosition_Id] in table 'StudSovietMembers'
-ALTER TABLE [dbo].[StudSovietMembers]
-ADD CONSTRAINT [FK_StudSovietMemberStudSovietPosition]
-    FOREIGN KEY ([StudSovietPosition_Id])
-    REFERENCES [dbo].[StudSovietPositions]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_StudSovietMemberStudSovietPosition'
-CREATE INDEX [IX_FK_StudSovietMemberStudSovietPosition]
-ON [dbo].[StudSovietMembers]
-    ([StudSovietPosition_Id]);
 GO
 
 -- --------------------------------------------------

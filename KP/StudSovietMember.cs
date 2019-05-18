@@ -16,8 +16,8 @@ namespace KP
     {
         public int Id { get; set; }
         public Nullable<System.DateTime> DateOfEntry { get; set; }
+        public string Position { get; set; }
     
         public virtual Student Student { get; set; }
-        public virtual StudSovietPosition StudSovietPosition { get; set; }
     }
 }

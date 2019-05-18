@@ -1,15 +1,21 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
+
 using System.Windows.Markup;
+using System.Windows.Media.Imaging;
 
 namespace KP
 {
-    internal class StudentWindowViewModel
+    internal class StudentWindowViewModel : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,15 +40,17 @@ namespace KP
             }
         }
 
-        /*Список должностей*/
-        ObservableCollection<StudSovietPosition> studsovitePositions;
-        public ObservableCollection<StudSovietPosition> StudsovitePositions
+        /*Выбранная должность*/
+
+        string studSovietPosition;
+        public string StudSovietPosition
         {
-            get { return studsovitePositions; }
+            get { return studSovietPosition; }
             set
             {
-                studsovitePositions = value;
-                OnPropertyChanged("StudsovitePositions");
+                studSovietPosition = value;
+                Student.StudSovietMember.Position = value;
+                OnPropertyChanged("StudSovietPosition");
             }
         }
 
@@ -126,6 +134,21 @@ namespace KP
                 OnPropertyChanged("SelectedGroup");
             }
         }
+
+        string selectedSex;    // имя
+        public string SelectedSex
+        {
+            get { return selectedSex; }
+            set
+            {
+                selectedSex = value;
+                if (selectedSex != null)
+                {
+                    Student.Sex = (string)selectedSex;
+                }
+                OnPropertyChanged("SelectedSex");
+            }
+        }
         
         string selectedNote; // хар-ка
         public string SelectedNote
@@ -199,11 +222,52 @@ namespace KP
             set
             {
                 selectedDateOfEntryMember = (DateTime)value;
-                Student.DateOfDeparture = selectedDateOfEntryMember;
+                
+                Student.StudSovietMember.DateOfEntry = selectedDateOfEntryMember;
                 OnPropertyChanged("SelectedDateOfEntryMember");
             }
         }
 
+        public string imagePath;
+        public string ImagePath
+        {
+            get { return imagePath; }
+            set
+            {
+                imagePath = value;
+                Student.Photo = value;
+                OnPropertyChanged("ImagePath");
+            }
+        }
+
+        // команда открытия файла
+        private RelayCommand openCommand;
+        public RelayCommand OpenCommand
+        {
+            get
+            {
+                return openCommand ??
+                  (openCommand = new RelayCommand(obj =>
+                  {
+                      try
+                      {
+                          OpenFileDialog dlg = new OpenFileDialog();
+                          dlg.InitialDirectory = "";
+                          dlg.Filter = "Image files (*.jpg,*.png,*.bmp)|*.jpg;*.png;*.bmp|All Files (*.*)|*.*";
+                          if (dlg.ShowDialog() == true)
+                          {
+                              dlg.Multiselect = false;
+                              ImagePath = dlg.FileName;
+                          }
+
+                      }
+                      catch (Exception ex)
+                      {
+                          
+                      }
+                  }));
+            }
+        }
 
         //int selectedIndexFaculty;
         //public int SelectedIndexFaculty
@@ -224,21 +288,24 @@ namespace KP
 
         }
 
-        public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom, ObservableCollection<StudSovietPosition> StudsovietPositions)
+        public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom)
         {
             try
             {
-                if(selectedRoom == null)
+                // for datetime
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("RU-RU");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("RU-RU");
+                if (selectedRoom == null)
                 {
                     throw new Exception("Ошибка! Не выбрана комната!");
                 }
+
+                // new student
                 if (s.FirstName != null)
                 {
-                    Thread.CurrentThread.CurrentCulture = new CultureInfo("RU-RU");
-                    Thread.CurrentThread.CurrentUICulture = new CultureInfo("RU-RU");
                     Student = s;
                     Student.Room = selectedRoom;
-                    this.faculties = faculties;
+                    Faculties = faculties;
                     SelectedFirstName = Student.FirstName;
                     SelectedLastName = Student.LastName;
                     SelectedSecondName = Student.SecondName;
@@ -246,29 +313,40 @@ namespace KP
                     SelectedFaculty = Student.Faculty;
                     SelectedGroup = (int)Student.Group;
                     SelectedNote = Student.Note;
+                    SelectedSex = Student.Sex;
+
+                    StudSovietPosition = Student.StudSovietMember.Position;
+
+                    
+
+                    if (Student.Photo != null)
+                    {
+                        ImagePath = Student.Photo;  ///!!!
+                    }
 
                     SelectedDateOfDeparture = (DateTime)Student.DateOfDeparture;
                     SelectedDateOfEntry = (DateTime)Student.DateOfEntry;
-                    if (Student.StudSovietMember != null)
-                    {
-                        SelectedDateOfEntryMember = (DateTime)Student.StudSovietMember.DateOfEntry;
-                    }
+                    SelectedDateOfEntryMember = (DateTime)Student.StudSovietMember.DateOfEntry;
                     SelectedBirthday = (DateTime)Student.Birthday;
 
                 }
+                // existing student
                 else
                 {
                     Student = s;
                     this.faculties = faculties;
-                    this.StudsovitePositions = StudsovietPositions;
-                    Student.Room = selectedRoom;
 
+                    Student.Room = selectedRoom;
+                    Student.Photo = ImagePath = @"\images\user-default.png";
+                    Student.StudSovietMember = new StudSovietMember();
                     SelectedDateOfDeparture = DateTime.Now;
                     SelectedDateOfEntry = DateTime.Now;
                     SelectedDateOfEntryMember = DateTime.Now;
                     SelectedBirthday = DateTime.Now;
-                }
+                    SelectedSex = "Мужской";
 
+
+                }
 
                 studentWindowView = new StudentWindowView();
                 studentWindowView.Language = XmlLanguage.GetLanguage("ru-RU");

@@ -215,8 +215,11 @@
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <!--Изображение-->
                                 
+                                <!--Изображение-->
+                                <Grid>
+                                    <Image Source="{Binding Photo}"></Image>
+                                </Grid>
                                 
                                 <!--Основная информация-->
                                 <materialDesign:ColorZone
@@ -273,7 +276,7 @@
                                     <TextBlock Grid.Row="1" Padding="0" Margin="1">Дата выселения:</TextBlock>
                                     <TextBlock Grid.Row="1" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfDeparture}"/>
                                     <TextBlock Grid.Row="2" Padding="0" Margin="1">Должность:</TextBlock>
-                                    <TextBlock Grid.Row="2" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=StudSovietMember, TargetNullValue=[не явл. членом]}"/>
+                                    <TextBlock Grid.Row="2" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=StudSovietMember.Position, TargetNullValue=[не явл. членом]}"/>
                                     <TextBlock Grid.ColumnSpan="2" Margin="7,7,7,0" Grid.Row="3">Описание:</TextBlock>
                                     <TextBlock Grid.ColumnSpan="2" Margin="7" Grid.Row="4" TextWrapping="Wrap" 
                          Text="{Binding Path=Note, TargetNullValue=[Описание не предоставлено]}"></TextBlock>

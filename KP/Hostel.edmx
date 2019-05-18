@@ -12,7 +12,6 @@
     <EntitySet Name="Floors" EntityType="Hostel.Store.Floors" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="StudSovietMembers" EntityType="Hostel.Store.StudSovietMembers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DutyFloorWatches" EntityType="Hostel.Store.DutyFloorWatches" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="StudSovietPositions" EntityType="Hostel.Store.StudSovietPositions" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="StudentRoom" Association="Hostel.Store.StudentRoom">
       <End Role="Student" EntitySet="Students" />
       <End Role="Room" EntitySet="Rooms" />
@@ -33,10 +32,6 @@
       <End Role="Student" EntitySet="Students" />
       <End Role="StudSovietMember" EntitySet="StudSovietMembers" />
     </AssociationSet>
-    <AssociationSet Name="StudSovietMemberStudSovietPosition" Association="Hostel.Store.StudSovietMemberStudSovietPosition">
-      <End Role="StudSovietMember" EntitySet="StudSovietMembers" />
-      <End Role="StudSovietPosition" EntitySet="StudSovietPositions" />
-    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Students">
     <Key>
@@ -52,7 +47,8 @@
     <Property Name="Birthday" Type="datetime" Nullable="false" />
     <Property Name="DateOfEntry" Type="datetime" Nullable="true" />
     <Property Name="DateOfDeparture" Type="datetime" Nullable="true" />
-    <Property Name="Photo" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Photo" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Sex" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Room_Id" Type="int" Nullable="false" />
     <Property Name="Faculty_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -87,8 +83,8 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DateOfEntry" Type="datetime" Nullable="true" />
+    <Property Name="Position" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Student_Id" Type="int" Nullable="false" />
-    <Property Name="StudSovietPosition_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DutyFloorWatches">
     <Key>
@@ -100,14 +96,6 @@
     <Property Name="TimeFinish" Type="time" Nullable="false" />
     <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Student_Id" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="StudSovietPositions">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Position" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <Association Name="StudentRoom">
     <End Role="Student" Type="Hostel.Store.Students" Multiplicity="*" />
@@ -169,18 +157,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="StudSovietMemberStudSovietPosition">
-    <End Role="StudSovietMember" Type="Hostel.Store.StudSovietMembers" Multiplicity="*" />
-    <End Role="StudSovietPosition" Type="Hostel.Store.StudSovietPositions" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="StudSovietPosition">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="StudSovietMember">
-        <PropertyRef Name="StudSovietPosition_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -212,11 +188,6 @@
             <End Role="Student" EntitySet="Students" />
             <End Role="StudSovietMember" EntitySet="StudSovietMembers" />
           </AssociationSet>
-          <EntitySet Name="StudSovietPositions" EntityType="Hostel.StudSovietPosition" />
-          <AssociationSet Name="StudSovietMemberStudSovietPosition" Association="Hostel.StudSovietMemberStudSovietPosition">
-            <End Role="StudSovietMember" EntitySet="StudSovietMembers" />
-            <End Role="StudSovietPosition" EntitySet="StudSovietPositions" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Student">
           <Key>
@@ -236,7 +207,8 @@
           <Property Name="DateOfDeparture" Type="DateTime" Nullable="true" />
           <NavigationProperty Name="DutyFloorWatches" Relationship="Hostel.StudentDutyWatch" FromRole="Student" ToRole="DutyWatch" />
           <NavigationProperty Name="StudSovietMember" Relationship="Hostel.StudentStudSovietMember" FromRole="Student" ToRole="StudSovietMember" />
-          <Property Name="Photo" Type="Binary" Nullable="true" />
+          <Property Name="Photo" Type="String" Nullable="true" />
+          <Property Name="Sex" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -285,7 +257,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateOfEntry" Type="DateTime" Nullable="true" />
           <NavigationProperty Name="Student" Relationship="Hostel.StudentStudSovietMember" FromRole="StudSovietMember" ToRole="Student" />
-          <NavigationProperty Name="StudSovietPosition" Relationship="Hostel.StudSovietMemberStudSovietPosition" FromRole="StudSovietMember" ToRole="StudSovietPosition" />
+          <Property Name="Position" Type="String" Nullable="true" />
         </EntityType>
         <EntityType Name="DutyFloorWatch">
           <Key>
@@ -305,19 +277,6 @@
         <Association Name="StudentStudSovietMember">
           <End Type="Hostel.Student" Role="Student" Multiplicity="1" />
           <End Type="Hostel.StudSovietMember" Role="StudSovietMember" Multiplicity="0..1" />
-        </Association>
-        <EntityType Name="StudSovietPosition">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Position" Type="String" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="true" />
-          <NavigationProperty Name="StudSovietMember" Relationship="Hostel.StudSovietMemberStudSovietPosition" FromRole="StudSovietPosition" ToRole="StudSovietMember" />
-        </EntityType>
-        <Association Name="StudSovietMemberStudSovietPosition">
-          <End Type="Hostel.StudSovietMember" Role="StudSovietMember" Multiplicity="0..1" />
-          <End Type="Hostel.StudSovietPosition" Role="StudSovietPosition" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -339,6 +298,7 @@
           <ScalarProperty Name="DateOfEntry" ColumnName="DateOfEntry" />
           <ScalarProperty Name="DateOfDeparture" ColumnName="DateOfDeparture" />
           <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -374,6 +334,7 @@
         <MappingFragment StoreEntitySet="StudSovietMembers">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DateOfEntry" ColumnName="DateOfEntry" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -385,15 +346,6 @@
           <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
           <ScalarProperty Name="TimeFinish" ColumnName="TimeFinish" />
           <ScalarProperty Name="Type" ColumnName="Type" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StudSovietPositions">
-      <EntityTypeMapping TypeName="IsTypeOf(Hostel.StudSovietPosition)">
-        <MappingFragment StoreEntitySet="StudSovietPositions">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Position" ColumnName="Position" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -432,14 +384,6 @@
     <AssociationSetMapping Name="StudentStudSovietMember" TypeName="Hostel.StudentStudSovietMember" StoreEntitySet="StudSovietMembers">
       <EndProperty Name="Student">
         <ScalarProperty Name="Id" ColumnName="Student_Id" />
-      </EndProperty>
-      <EndProperty Name="StudSovietMember">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="StudSovietMemberStudSovietPosition" TypeName="Hostel.StudSovietMemberStudSovietPosition" StoreEntitySet="StudSovietMembers">
-      <EndProperty Name="StudSovietPosition">
-        <ScalarProperty Name="Id" ColumnName="StudSovietPosition_Id" />
       </EndProperty>
       <EndProperty Name="StudSovietMember">
         <ScalarProperty Name="Id" ColumnName="Id" />

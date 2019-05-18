@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationViewModel.cs" />
+    <Compile Include="DefaultDialogService.cs" />
     <Compile Include="DutyFloorWatch.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
@@ -147,9 +148,6 @@
     </Compile>
     <Compile Include="StudentWindowViewModel.cs" />
     <Compile Include="StudSovietMember.cs">
-      <DependentUpon>Hostel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StudSovietPosition.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
     <Page Include="FloorWindowView.xaml">
@@ -223,6 +221,7 @@
       <DependentUpon>Hostel.edmx</DependentUpon>
       <LastGenOutput>Hostel1.cs</LastGenOutput>
     </Content>
+    <Resource Include="Images\user-default.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

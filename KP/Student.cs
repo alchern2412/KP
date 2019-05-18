@@ -30,7 +30,8 @@ namespace KP
         public System.DateTime Birthday { get; set; }
         public Nullable<System.DateTime> DateOfEntry { get; set; }
         public Nullable<System.DateTime> DateOfDeparture { get; set; }
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
+        public string Sex { get; set; }
     
         public virtual Room Room { get; set; }
         public virtual Faculty Faculty { get; set; }
@@ -56,11 +57,6 @@ namespace KP
                 DutyFloorWatches = this.DutyFloorWatches,
                 StudSovietMember = this.StudSovietMember
             };
-        }
-
-        public override string ToString()
-        {
-            return $"{FirstName} {SecondName} {LastName}" ;
         }
     }
 }
