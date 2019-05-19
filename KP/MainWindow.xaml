@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
        
         mc:Ignorable="d"
-        Title="KP" Height="600" Width="828">
+        Title="KP" Height="601.5" Width="950">
 
     <!--<Window.DataContext>
         <local:RoomViewModel />
@@ -62,26 +62,34 @@
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Редактировать" >
                 <MenuItem Header="Добавить этаж"></MenuItem>
             </MenuItem>
-            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="View" ></MenuItem>
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Дежурства" >
+                <MenuItem Command="{Binding OpenWatchesCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Просмотр" ></MenuItem>
+                <MenuItem Command="{Binding WriteWatchCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Записать" ></MenuItem>
+            </MenuItem>
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Сортировать" >
+                <MenuItem Command="{Binding SortName}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По имени" ></MenuItem>
+                <MenuItem Command="{Binding SortLastname}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По фамилии" ></MenuItem>
+                <MenuItem Command="{Binding SortAge}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По возрасту" ></MenuItem>
+            </MenuItem>
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}">
                 <MenuItem.Header>
 
 
-                            <Grid>
-                                
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
               Width="Auto" />
-                                    <ColumnDefinition
+                            <ColumnDefinition
               Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Button 
+                        </Grid.ColumnDefinitions>
+                        <Button 
             Style="{DynamicResource MaterialDesignToolButton}">
-                                    <materialDesign:PackIcon
+                            <materialDesign:PackIcon
               Kind="Magnify"
               Opacity=".56" />
-                                </Button>
-                                <TextBox
+                        </Button>
+                        <TextBox 
                                     
                                     Text="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="1"
@@ -94,11 +102,11 @@
             MinWidth="200"
             VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
 
-                            </Grid>
-                        
+                    </Grid>
 
 
-                    
+
+
                 </MenuItem.Header>
             </MenuItem>
         </Menu>
@@ -126,13 +134,13 @@
                 <Grid Background="#FFFAFAFA">
                     <TextBlock HorizontalAlignment="Center">Этаж</TextBlock>
                 </Grid>
-                <ListBox Grid.Row="1" BorderThickness="1" BorderBrush="Gray" x:Name="floorsList" SelectedIndex="{Binding FloorSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
+                <ListBox Grid.Row="1" BorderThickness="1" BorderBrush="Gray" x:Name="floorsList"  ItemsSource="{Binding db.Floors.Local,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFloor,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid MinWidth="100">
                                 <StackPanel HorizontalAlignment="Stretch">
-                                    <TextBlock Style="{StaticResource ResourceKey=txtBoxRoom}" Text="{Binding Path=Number}">
+                                    <TextBlock Style="{StaticResource ResourceKey=txtBoxRoom}" Text="{Binding Number}">
 
                                     </TextBlock>
                                 </StackPanel>
@@ -163,9 +171,9 @@
                 <Grid Background="#FFFAFAFA">
                     <TextBlock HorizontalAlignment="Center">Комната</TextBlock>
                 </Grid>
-            
-            <Grid ShowGridLines="True" Grid.Row="1">
-                    <ListBox BorderThickness="1" BorderBrush="Gray" x:Name="roomsList" SelectedIndex="{Binding RoomSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=SelectedRooms}" SelectedItem="{Binding SelectedRoomF}"  Grid.Column="2" >
+
+                <Grid ShowGridLines="True" Grid.Row="1">
+                    <ListBox BorderThickness="1" BorderBrush="Gray" x:Name="roomsList" ItemsSource="{Binding Path=SelectedFloor.Rooms,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedRoomF,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" >
                         <!--<ListBox.ItemContainerStyle>
                             <Style>
                                 <Setter Property="ListBoxItem.HorizontalAlignment" Value="Center"/>
@@ -203,9 +211,9 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Grid Background="#FFFAFAFA">
-                <TextBlock HorizontalAlignment="Center">Студент</TextBlock>
+                    <TextBlock HorizontalAlignment="Center">Студент</TextBlock>
                 </Grid>
-                    <ListBox BorderThickness="1" BorderBrush="Gray" Margin="0" Grid.Row="1" x:Name="studentsList" ItemsSource="{Binding SelectedStudents}" SelectedItem="{Binding SelectedStudent}" MinWidth="502">
+                <ListBox  BorderThickness="1" BorderBrush="Gray" Margin="0,0,-10,0" Grid.Row="1" x:Name="studentsList" ItemsSource="{Binding SelectedStudents, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedStudent,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" MinWidth="502">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -215,17 +223,17 @@
                                     <ColumnDefinition Width="200"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <!--Изображение-->
                                 <Grid>
                                     <Image Source="{Binding Photo}"></Image>
                                 </Grid>
-                                
+
                                 <!--Основная информация-->
                                 <materialDesign:ColorZone
                                       Mode="Light"
                                       Padding="12" Grid.Column="1">
-                                    
+
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition/>
@@ -258,32 +266,32 @@
                                 </materialDesign:ColorZone>
                                 <materialDesign:ColorZone Grid.Column="2" Mode="PrimaryLight"
                                       Padding="12">
-                                <Grid >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Padding="0" Margin="1">Дата заселения:</TextBlock>
-                                    <TextBlock Grid.Row="0" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfEntry}"/>
-                                    <TextBlock Grid.Row="1" Padding="0" Margin="1">Дата выселения:</TextBlock>
-                                    <TextBlock Grid.Row="1" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfDeparture}"/>
-                                    <TextBlock Grid.Row="2" Padding="0" Margin="1">Должность:</TextBlock>
-                                    <TextBlock Grid.Row="2" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=StudSovietMember.Position, TargetNullValue=[не явл. членом]}"/>
-                                    <TextBlock Grid.ColumnSpan="2" Margin="7,7,7,0" Grid.Row="3">Описание:</TextBlock>
-                                    <TextBlock Grid.ColumnSpan="2" Margin="7" Grid.Row="4" TextWrapping="Wrap" 
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" Padding="0" Margin="1">Дата заселения:</TextBlock>
+                                        <TextBlock Grid.Row="0" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfEntry}"/>
+                                        <TextBlock Grid.Row="1" Padding="0" Margin="1">Дата выселения:</TextBlock>
+                                        <TextBlock Grid.Row="1" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=DateOfDeparture}"/>
+                                        <TextBlock Grid.Row="2" Padding="0" Margin="1">Должность:</TextBlock>
+                                        <TextBlock Grid.Row="2" Padding="0" Grid.Column="1" Margin="1" Text="{Binding Path=StudSovietMember.Position, TargetNullValue=[не явл. членом]}"/>
+                                        <TextBlock Grid.ColumnSpan="2" Margin="7,7,7,0" Grid.Row="3">Описание:</TextBlock>
+                                        <TextBlock Grid.ColumnSpan="2" Margin="7" Grid.Row="4" TextWrapping="Wrap" 
                          Text="{Binding Path=Note, TargetNullValue=[Описание не предоставлено]}"></TextBlock>
-                                </Grid>
+                                    </Grid>
                                 </materialDesign:ColorZone>
                             </Grid>
-                            
+
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

@@ -18,19 +18,5 @@ namespace KP
             Floor = f;
             floorWindowView.DataContext = Floor;
         }
-
-        private RelayCommand accept1Command;
-        public RelayCommand Accept1Command
-        {
-            get
-            {
-                return accept1Command ??
-                  (accept1Command = new RelayCommand(obj =>
-                  {
-                      floorWindowView.DialogResult = true;
-                      
-                  }));
-            }
-        }
     }
 }

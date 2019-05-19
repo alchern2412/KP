@@ -150,6 +150,14 @@
     <Compile Include="StudSovietMember.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
+    <Compile Include="WatchesView.xaml.cs">
+      <DependentUpon>WatchesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WatchesViewModel.cs" />
+    <Compile Include="WatchWriteView.xaml.cs">
+      <DependentUpon>WatchWriteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WatchWriteViewModel.cs" />
     <Page Include="FloorWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -171,6 +179,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StudentWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WatchesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WatchWriteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

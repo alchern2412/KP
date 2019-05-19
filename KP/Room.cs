@@ -11,13 +11,14 @@ namespace KP
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Collections.ObjectModel;
+
     public partial class Room
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Room()
         {
-            this.Students = new HashSet<Student>();
+            this.Students = new ObservableCollection<Student>();
         }
     
         public int Id { get; set; }
@@ -27,7 +28,12 @@ namespace KP
         public Nullable<int> Chair { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ObservableCollection<Student> Students { get; set; }
         public virtual Floor Floor { get; set; }
+
+        public override string ToString()
+        {
+            return Number.ToString();
+        }
     }
 }

@@ -1,0 +1,179 @@
+﻿<Window x:Class="KP.WatchesView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KP"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        
+        Title="WatchesView" Height="384" Width="418">
+    <DockPanel>
+        <Menu x:Name="mainMenu" Height="30" DockPanel.Dock="Top">
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Дежурства" >
+                <MenuItem Command="{Binding OpenWatchesCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Просмотр" ></MenuItem>
+                <MenuItem Command="{Binding WriteWatchCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Записать" ></MenuItem>
+            </MenuItem>
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Сортировать" >
+                <MenuItem Command="{Binding SortName}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По имени" ></MenuItem>
+                <MenuItem Command="{Binding SortLastname}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По фамилии" ></MenuItem>
+                <MenuItem Command="{Binding SortAge}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По возрасту" ></MenuItem>
+            </MenuItem>
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}">
+                <MenuItem.Header>
+
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="Auto" />
+                            <ColumnDefinition
+                                Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button 
+                                Style="{DynamicResource MaterialDesignToolButton}">
+                            <materialDesign:PackIcon
+                                Kind="Magnify"
+                                Opacity=".56" />
+                        </Button>
+                        <TextBox 
+                                    
+                                Text="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Column="1"
+
+                                materialDesign:HintAssist.Hint="Студ/дата"
+                                            
+                                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                            
+                                BorderThickness="0"
+                                MinWidth="80"
+                                VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+
+                    </Grid>
+
+
+
+
+                </MenuItem.Header>
+            </MenuItem>
+        </Menu>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <StackPanel>
+                    <Button Margin="5"></Button>
+                    <Button Margin="5"></Button>
+                    <Button Margin="5"></Button>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Этаж"/>
+                    <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                           ItemsSource="{Binding applicationViewModel.db.Floors.Local}"
+                           VerticalAlignment="Center"
+                           Grid.Column="1"
+                           SelectedItem="{Binding Path=SelectedFloor, Mode=TwoWay}">
+
+                    </ComboBox>
+                </Grid>
+                <ListBox  BorderThickness="1" BorderBrush="Gray" Grid.Row="1" ItemsSource="{Binding SelectedFloorWatches, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedWatch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:ColorZone>
+                                <Grid  Width="150">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <!--Основная информация-->
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Дата:" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Date}" />
+
+                                    <TextBlock  Grid.Row="1" Text="Начало:" />
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TimeStart}" />
+
+                                    <TextBlock Grid.Row="2" Text="Конец:" />
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding TimeFinish}" />
+
+                                    <TextBlock Grid.Row="3" Text="Студент:" />
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Student}" />
+
+                                </Grid>
+                            </materialDesign:ColorZone>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Вахта"/>
+                </Grid>
+                <ListBox  BorderThickness="1" BorderBrush="Gray" Grid.Row="1" ItemsSource="{Binding SelectedDutyWatches, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedWatch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:ColorZone materialDesign:ColorZoneAssist.Mode="Inverted">
+                                <Grid Width="150">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <!--Основная информация-->
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Дата:" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Date}" />
+
+                                    <TextBlock  Grid.Row="1" Text="Начало:" />
+                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TimeStart}" />
+
+                                    <TextBlock Grid.Row="2" Text="Конец:" />
+                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding TimeFinish}" />
+
+                                    <TextBlock Grid.Row="3" Text="Студент:" />
+                                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Student}" />
+
+                                </Grid>
+                            </materialDesign:ColorZone>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

@@ -24,77 +24,14 @@ namespace KP
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
 
+        public ObservableCollection<Student> SelectedStudents { get; set; }
+
         #endregion
 
-        public HostelContainer db;
+        public HostelContainer db { get;  }
 
         #region Collections
-        public ObservableCollection<Room> rooms;
-        public ObservableCollection<Room> Rooms
-        {
-            get { return rooms; }
-            set
-            {
-                rooms = value;
-                OnPropertyChanged("Rooms");
-            }
-        }
 
-        public ObservableCollection<Floor> floors;
-        public ObservableCollection<Floor> Floors
-        {
-            get { return floors; }
-            set
-            {
-                floors = value;
-                OnPropertyChanged("Floors");
-            }
-        }
-
-        public ObservableCollection<Student> students;
-        public ObservableCollection<Student> Students
-        {
-            get { return students; }
-            set
-            {
-                students = value;
-                OnPropertyChanged("Students");
-            }
-        }
-
-        public ObservableCollection<Faculty> faculties;
-        public ObservableCollection<Faculty> Faculties
-        {
-            get { return faculties; }
-            set
-            {
-                faculties = value;
-                OnPropertyChanged("Faculties");
-            }
-        }
-
-
-        public ObservableCollection<StudSovietMember> studsovietMembers;
-        public ObservableCollection<StudSovietMember> StudsovietMembers
-        {
-            get { return studsovietMembers; }
-            set
-            {
-                studsovietMembers = value;
-                OnPropertyChanged("StudsovietMembers");
-            }
-        }
-
-        public ObservableCollection<DutyFloorWatch> dutyFloorWatches;
-        public ObservableCollection<DutyFloorWatch> DutyFloorWatches
-        {
-            get { return dutyFloorWatches; }
-            set
-            {
-                dutyFloorWatches = value;
-                OnPropertyChanged("DutyFloorWatches");
-            }
-        }
         #endregion
 
         ////tmp
@@ -123,87 +60,61 @@ namespace KP
             db.DutyFloorWatches.Load();
 
             db.Students.Load();
-
-            //db.Faculties.Add(new Faculty { FacultyName = "ИТ"});
-            //db.Faculties.Add(new Faculty { FacultyName = "ТОВ" });
-            //db.Faculties.Add(new Faculty { FacultyName = "ХТИТ" });
-            //db.Faculties.Add(new Faculty { FacultyName = "ПиМ" });
-            //db.Faculties.Add(new Faculty { FacultyName = "ЛХ" });
-            //db.Faculties.Add(new Faculty { FacultyName = "ИЭФ" });
-            //db.Faculties.Add(new Faculty { FacultyName = "ТТЛП" });
-            db.SaveChanges();
-
-            
-
+            SelectedStudents = new ObservableCollection<Student>(db.Students.Local);
+            OnPropertyChanged("SelectedStudents");
+            //MessageBox.Show(db.Floors.Local.Count.ToString());    
             db.Rooms.OrderBy(s => s.Number);
 
-            
-            /*Выгрузка данных из бд в местные коллекции*/
-            Rooms = new ObservableCollection<Room>(db.Rooms.Local.ToBindingList().OrderBy(s => s.Number));
-            Faculties = new ObservableCollection<Faculty>(db.Faculties.Local.ToBindingList());
-            Students = new ObservableCollection<Student>(db.Students.Local.ToBindingList());
-            Floors = new ObservableCollection<Floor>(db.Floors.Local.ToBindingList().OrderBy(s => s.Number));
 
-            StudsovietMembers = new ObservableCollection<StudSovietMember>(db.StudSovietMembers.Local.ToBindingList());
-            DutyFloorWatches = new ObservableCollection<DutyFloorWatch>(db.DutyFloorWatches.Local.ToBindingList());
-
-
-            selectedRooms = new ObservableCollection<Room>();
-
-            
-            
-
-            //st1 = Students.First();
-
-            FloorSelectedIndex = 0;
-            RoomSelectedIndex = 0;
-            StudentSelectedIndex = 0;
         }
 
         #region CommandsFloor
 
 
-        private int floorSelectedIndex;  // выбранный этаж
-        public int FloorSelectedIndex
-        {
-            get { return floorSelectedIndex; }
-            set
-            {
-                if (value == -1)
-                {
-                    floorSelectedIndex = 0;
-                }
-                else
-                {
-                    floorSelectedIndex = value;
-                }
+        //private int floorSelectedIndex;  // выбранный этаж
+        //public int FloorSelectedIndex
+        //{
+        //    get { return floorSelectedIndex; }
+        //    set
+        //    {
+        //        if (value == -1)
+        //        {
+        //            floorSelectedIndex = 0;
+        //        }
+        //        else
+        //        {
+        //            floorSelectedIndex = value;
+        //        }
                 
-                OnPropertyChanged("SelectedRooms");
-                OnPropertyChanged("FloorSelectedIndex");
-                RoomSelectedIndex = 0;
-            }
-        }
+        //        OnPropertyChanged("SelectedRooms");
+        //        OnPropertyChanged("FloorSelectedIndex");
+        //        RoomSelectedIndex = 0;
+        //    }
+        //}
 
-        private int roomSelectedIndex;  // выбранная комната
-        public int RoomSelectedIndex
-        {
-            get { return roomSelectedIndex; }
-            set
-            {
-                if (value == -1)
-                {
-                    roomSelectedIndex = 0;
+        //private int roomSelectedIndex;  // выбранная комната
+        //public int RoomSelectedIndex
+        //{
+        //    get { return roomSelectedIndex; }
+        //    set
+        //    {
+        //        if (value == -1)
+        //        {
+        //            roomSelectedIndex = 0;
                     
-                }
-                else
-                {
-                    roomSelectedIndex = value;
-                }
+        //        }
+        //        else
+        //        {
+        //            roomSelectedIndex = value;
+        //        }
                 
-                OnPropertyChanged("RoomSelectedIndex");
-                StudentSelectedIndex = 0;
-            }
-        }
+        //        OnPropertyChanged("RoomSelectedIndex");
+        //        StudentSelectedIndex = 0;
+        //    }
+        //}
+
+
+        //////////////////////////////////////// ПОИСК
 
         private string searchText;
         public string SearchText
@@ -211,12 +122,12 @@ namespace KP
             get { return searchText; }
             set
             {
-                    searchText = value;
-                    OnPropertyChanged("SearchText");
-                RoomSelectedIndex = -1;
-                FloorSelectedIndex = -1;
-
-                SelectedStudents = new ObservableCollection<Student>(Students.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
+                searchText = value;
+                OnPropertyChanged("SearchText");
+                
+                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
+                OnPropertyChanged("SelectedStudents");
+                    
             }
         }
 
@@ -264,9 +175,8 @@ namespace KP
                                           throw new Exception("Дублирование этажей");
                                       }
                                   }
-                                  Floors.Insert(Floors.Count, floor);
+                                  
                                   db.Floors.Add(floor);
-                                  OnPropertyChanged("Floors");
                                   db.SaveChanges();
                               }
                           }
@@ -274,14 +184,6 @@ namespace KP
                           {
                               MessageBox.Show(ex.Message);
                           }
-
-
-                          //Floor floor = new Floor();
-                          //Floors.Insert(0, floor);
-                          //SelectedFloor = floor;
-
-                          //db.Floors.Add(floor);
-                          //db.SaveChanges();
                       }));
                 
             }
@@ -296,66 +198,24 @@ namespace KP
                 return removeFloorCommand ??
                     (removeFloorCommand = new RelayCommand(obj =>
                     {
-                        Floor floor = obj as Floor;
-                        if (floor != null)
+                        /*Удалить из БД этаж*/
+                        //SelectedStudents = null;
+                        foreach(var room in SelectedFloor.Rooms)
                         {
-                            
-
-
-                            /*Удалить из observableCollection*/
-                            for (int i = 0; i < Rooms.Count; i++)   
+                            foreach (var i in room.Students)
                             {
-                                if (Rooms[i].Floor == floor)
-                                {
-                                    /*Удалить из observableCollection студентов*/
-                                    for (int j = 0; j < Students.Count; j++)
-                                    {
-                                        if (Students[j].Room == Rooms[i])
-                                        {
-                                            //Students.Remove(Students[j]);
-                                            SelectedStudents.Remove(Students[j]);
-                                        }
-                                    }
-
-                                    SelectedRooms.Remove(Rooms[i]);
-                                    OnPropertyChanged("SelectedRooms");
-                                }
+                                db.StudSovietMembers.Remove(i.StudSovietMember);
+                                db.DutyFloorWatches.RemoveRange(i.DutyFloorWatches);
                             }
-
-                            Floors.Remove(floor);
-                            
-                            /*Удалить из БД комнаты этажа*/
-                            foreach(var i in db.Rooms)
-                            {
-                                if(i.Floor == floor)
-                                {
-                                    /*Удалить из БД комнаты этажа*/
-                                    foreach (var j in db.Students)
-                                    {
-                                        if (j.Room == i)
-                                        {
-                                            db.Students.Remove(j);
-                                        }
-                                    }
-
-                                    db.Rooms.Remove(i);
-                                }
-                            }
-
-                            /*Удалить из БД этаж*/
-                            db.Floors.Remove(floor);
-
-                            OnPropertyChanged("SelectedRooms");
-                            OnPropertyChanged("Rooms");
-                            FloorSelectedIndex = 0;
-                            RoomSelectedIndex = 0;
-                            StudentSelectedIndex = 0;
-                            OnPropertyChanged("FloorSelectedIndex");
-
-                            db.SaveChanges();
+                            db.Students.RemoveRange(room.Students);
                         }
-                    },
-                    (obj) => Floors.Count > 0));
+                        db.Rooms.RemoveRange(SelectedFloor.Rooms);
+                       
+
+                        db.Floors.Remove(SelectedFloor);
+                        db.SaveChanges();
+                        
+                    }));
             }
         }
 
@@ -389,27 +249,11 @@ namespace KP
             set
             {
                 selectedFloor = value;
-                if (selectedFloor != null)
-                {
-                    selectedRooms = new ObservableCollection<Room>(selectedFloor.Rooms.OrderBy(s => s.Number));
-                }
-                OnPropertyChanged("SelectedRooms");
+               // selectedFloor.Rooms = selectedFloor.Rooms.OrderBy(s => s.Number);
                 OnPropertyChanged("SelectedFloor");
             }
         }
 
-        /*Комнаты выбранного этажа, которые нужно показать*/
-        private ObservableCollection<Room> selectedRooms;
-        public ObservableCollection<Room> SelectedRooms
-        {
-            get { return selectedRooms; }
-            set
-            {
-                
-                selectedRooms = value;
-                OnPropertyChanged("SelectedRooms");
-            }
-        }
         #endregion
 
         #region CommandsRooms
@@ -455,12 +299,8 @@ namespace KP
                               }
 
                               room.Floor = findedfloor;
-                              Rooms.Insert(Rooms.Count, room);
-                              SelectedRooms.Insert(SelectedRooms.Count, room);
 
                               db.Rooms.Add(room);
-                              OnPropertyChanged("Rooms");
-                              OnPropertyChanged("SelectedRooms");
                               db.SaveChanges();
                           }
                       }
@@ -500,17 +340,14 @@ namespace KP
                           RoomWindowViewModel roomWindow = new RoomWindowViewModel(parm);
                           if (roomWindow.roomWindowView.ShowDialog() == true)
                           {
-                              db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Bed = parm.Bed;
-                              db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Chair = parm.Chair;
-                              db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Nightstand = parm.Nightstand;
-
-                              Rooms.Where(s => s.Number == parm.Number).ToList().First().Bed = parm.Bed;
-                              Rooms.Where(s => s.Number == parm.Number).ToList().First().Chair = parm.Chair;
-                              Rooms.Where(s => s.Number == parm.Number).ToList().First().Nightstand = parm.Nightstand;
+                              //db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Bed = parm.Bed;
+                              //db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Chair = parm.Chair;
+                              //db.Rooms.Where(s => s.Number == parm.Number).ToList().First().Nightstand = parm.Nightstand;
 
                               SelectedRoomF.Nightstand = parm.Nightstand;
                               SelectedRoomF.Bed = parm.Bed;
                               SelectedRoomF.Chair = parm.Chair;
+
                               OnPropertyChanged("SelectedRoomF");
 
                               db.SaveChanges();
@@ -520,15 +357,6 @@ namespace KP
                       {
                           MessageBox.Show(ex.Message);
                       }
-
-
-
-                      //Room room = new Room();
-                      //Rooms.Insert(0, room);
-                      //SelectedRoomF = room;
-
-                      //db.Rooms.Add(room);
-                      //db.SaveChanges();
                   }));
             }
         }
@@ -545,58 +373,24 @@ namespace KP
                         Room room = obj as Room;
                         if (room != null)
                         {
-                            /*Удалить из observableCollection студентов*/
-                            for (int i = 0; i < Students.Count; i++)
-                            {
-                                if (Students[i].Room == room)
-                                {
-                                    SelectedStudents.Remove(Students[i]);
-                                    Students.Remove(Students[i]);
-                                }
-                            }
+                            //db.StudSovietMembers.Remove(student.StudSovietMember);
+                            //db.Students.Remove(student);
 
-                            Rooms.Remove(room);
-
-                            /*Удалить из БД комнаты этажа*/
-                            foreach (var i in db.Students)
+                            foreach(var i in room.Students)
                             {
-                                if (i.Room == room)
-                                {
-                                    db.Students.Remove(i);
-                                }
+                                db.StudSovietMembers.Remove(i.StudSovietMember);
+                                db.DutyFloorWatches.RemoveRange(i.DutyFloorWatches);
                             }
-                            RoomSelectedIndex = 0;                           
-                            SelectedRooms.Remove(room);
+                            db.Students.RemoveRange(room.Students);
+
                             db.Rooms.Remove(room);
+                            
                             db.SaveChanges();
                         }
-                    },
-                    (obj) => Rooms.Count > 0));
+                    }));
             }
         }
 
-        //private RelayCommand doubleCommand;
-        //public RelayCommand DoubleCommand
-        //{
-        //    get
-        //    {
-        //        return doubleCommand ??
-        //            (doubleCommand = new RelayCommand(obj =>
-        //            {
-        //                Phone phone = obj as Phone;
-        //                if (phone != null)
-        //                {
-        //                    Phone phoneCopy = new Phone
-        //                    {
-        //                        Company = phone.Company,
-        //                        Price = phone.Price,
-        //                        Title = phone.Title
-        //                    };
-        //                    Phones.Insert(0, phoneCopy);
-        //                }
-        //            }));
-        //    }
-        //}
 
         private Room selectedRoom;
         public Room SelectedRoomF
@@ -604,15 +398,10 @@ namespace KP
             get { return selectedRoom; }
             set
             {
+                SearchText = "";
                 selectedRoom = value;
+                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedRoomF));
                 OnPropertyChanged("SelectedRoomF");
-                if (selectedRoom != null)
-                {
-                    selectedStudents = new ObservableCollection<Student>(selectedRoom.Students);
-
-                }
-                OnPropertyChanged("SelectedRooms");
-                OnPropertyChanged("SelectedFloor");
                 OnPropertyChanged("SelectedStudents");
             }
         }
@@ -621,16 +410,6 @@ namespace KP
 
         #region CommandsStudents
 
-        private ObservableCollection<Student> selectedStudents;
-        public ObservableCollection<Student> SelectedStudents
-        {
-            get { return selectedStudents; }
-            set
-            {
-                selectedStudents = value;
-                OnPropertyChanged("SelectedStudents");
-            }
-        }
 
 
 
@@ -646,41 +425,23 @@ namespace KP
                       Student student = new Student();
                       try
                       {
-                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedRoomF);
+                          StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, db.Faculties.Local, SelectedRoomF);
                           if (studentWindow.studentWindowView.ShowDialog() == true)
                           {
                               student = studentWindow.Student;
                               db.Students.Add(student);
                               db.SaveChanges();
 
-                              Students.Insert(Students.Count, student);
-                              //SelectedRooms.Insert(SelectedRooms.Count, room);
+                              SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedRoomF));
 
-                              
-
-                              SelectedStudents.Add(student);
-                              OnPropertyChanged("Students");
+                              OnPropertyChanged("SelectedRoomF");
                               OnPropertyChanged("SelectedStudents");
-                              
                           }
                       }
                       catch (Exception ex)
                       {
                           MessageBox.Show(ex.Message);
-                          SelectedStudents.Remove(student);
-                          db.Students.Remove(student);
-                          StudentSelectedIndex = 0;
-                          db.SaveChanges();
                       }
-
-
-
-                      //Room room = new Room();
-                      //Rooms.Insert(0, room);
-                      //SelectedRoomF = room;
-
-                      //db.Rooms.Add(room);
-                      //db.SaveChanges();
                   }));
             }
         }
@@ -693,6 +454,11 @@ namespace KP
             {
                 selectedStudent = value;
                 OnPropertyChanged("SelectedStudent");
+                //SelectedFloor = value.Room.Floor;
+                //OnPropertyChanged("SelectedFloor");
+                //SelectedRoomF = value.Room;
+                //OnPropertyChanged("SelectedRoomF");
+                
             }
         }
 
@@ -705,28 +471,40 @@ namespace KP
                 return removeStudentCommand ??
                     (removeStudentCommand = new RelayCommand(obj =>
                     {
-                        Student student = obj as Student;
-                        if (student != null)
-                        {
+                    Student student = obj as Student;
+                    if (student != null)
+                    {
                             //Students.Remove(student);
-                            StudsovietMembers.Remove(student.StudSovietMember);
+                            //db.StudSovietMembers.Remove(student.StudSovietMember);
+                            //db.StudSovietMembers.Remove(student.StudSovietMember);
+
+
                             db.StudSovietMembers.Remove(student.StudSovietMember);
+                            db.DutyFloorWatches.RemoveRange(student.DutyFloorWatches);
 
-                            SelectedStudents.Remove(student);
                             db.Students.Remove(student);
-
                             
 
-                            StudentSelectedIndex = 0;
                             db.SaveChanges();
-                        }
-                    },
-                    (obj) => Students.Count > 0));
+                            if (SearchText != null || SearchText != "")
+                            {
+                                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
+                            }
+                            else
+                            {
+                                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedStudent.Room));
+
+                            }
+                            OnPropertyChanged("SelectedRoomF");
+                                OnPropertyChanged("SelectedStudents");
+                    }
+                    }));
             }
         }
 
-        
-        private RelayCommand editStudentCommand;
+        //public ICollectionView ICollectionStudents;
+
+        private RelayCommand editStudentCommand;//entity state modified
         public RelayCommand EditStudentCommand
         {
             get
@@ -739,39 +517,244 @@ namespace KP
                             Student student = obj as Student;
                             if (student != null)
                             {
-                                StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, Faculties, SelectedStudent.Room);
+                                StudentWindowViewModel studentWindow = new StudentWindowViewModel(student, db.Faculties.Local, SelectedStudent.Room);
                                 if (studentWindow.studentWindowView.ShowDialog() == true)
                                 {
+                                    //SelectedStudent = null;
+                                    //SelectedStudents = null;
                                     student = studentWindow.Student;
-                                    Student tmp = (Student)student.Clone();
-
-                                    db.Students.Remove(student);
-                                    selectedStudents.Remove(student);
-                                    Students.Remove(student);
-
-                                    db.Students.Add(tmp);
                                     db.SaveChanges();
-                                    Students.Add(tmp);
-                                    selectedStudents.Add(tmp);
 
-                                    OnPropertyChanged("Students");
-                                    OnPropertyChanged("SelectedStudents");
+                                    SelectedStudents = new ObservableCollection<Student>(db.Students.Local);
                                     
+                                    OnPropertyChanged("SelectedStudent");
+                                    OnPropertyChanged("SelectedStudents");
+
+                                    if ((SearchText == null || SearchText == "") && SelectedRoomF != null)
+                                    {
+                                        SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedRoomF));
+                                    }
+                                    else if(SearchText != null && SearchText !=  "")
+                                    {
+                                        SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
+                                    }
+                                    else
+                                    {
+                                        SelectedStudents = new ObservableCollection<Student>(db.Students.Local);
+                                    }
+                                    OnPropertyChanged("SelectedStudent");
+                                    OnPropertyChanged("SelectedStudents");
                                 }
                             }
                         }
                         catch(Exception ex)
                         {
                             MessageBox.Show(ex.Message);
-                            Students = new ObservableCollection<Student>(db.Students.Local.ToBindingList());
                         }
                     }));
             }
         }
 
+        #region sorting
+        private RelayCommand sortName;
+        public RelayCommand SortName
+        {
+            get
+            {
+                return sortName ??
+                    (sortName = new RelayCommand(obj =>
+                    {
+                        bool flag = false;
+
+                        ObservableCollection<Student> tmp = new ObservableCollection<Student>(SelectedStudents.OrderBy(s => s.FirstName));
+                        for(int i = 0; i < SelectedStudents.Count; i++ )
+                        {
+                            if(!tmp[i].Equals(SelectedStudents[i]))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            tmp = new ObservableCollection<Student>(SelectedStudents.OrderByDescending(s => s.FirstName));
+                            for (int i = 0; i < SelectedStudents.Count; i++)
+                            {
+                                if (!tmp[i].Equals(SelectedStudents[i]))
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if(flag)
+                        {
+                            SelectedStudents = new ObservableCollection<Student>(SelectedStudents.OrderBy(s => s.FirstName));
+                        }
+                        else
+                        {
+                            SelectedStudents = new ObservableCollection<Student>(SelectedStudents.OrderByDescending(s => s.FirstName));
+                        }
+
+                        OnPropertyChanged("SelectedStudents");
+                    }));
+            }
+        }
+
+        private RelayCommand sortLastname;
+        public RelayCommand SortLastname
+        {
+            get
+            {
+                return sortLastname ??
+                    (sortLastname = new RelayCommand(obj =>
+                    {
+                        bool flag = false;
+
+                        ObservableCollection<Student> tmp = new ObservableCollection<Student>(SelectedStudents.OrderBy(s => s.LastName));
+                        for (int i = 0; i < SelectedStudents.Count; i++)
+                        {
+                            if (!tmp[i].Equals(SelectedStudents[i]))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            tmp = new ObservableCollection<Student>(SelectedStudents.OrderByDescending(s => s.LastName));
+                            for (int i = 0; i < SelectedStudents.Count; i++)
+                            {
+                                if (!tmp[i].Equals(SelectedStudents[i]))
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (flag)
+                        {
+                            SelectedStudents = new ObservableCollection<Student>(SelectedStudents.OrderBy(s => s.LastName));
+                        }
+                        else
+                        {
+                            SelectedStudents = tmp;
+                        }
+
+                        OnPropertyChanged("SelectedStudents");
+                    }));
+            }
+        }
+
+        private RelayCommand sortAge;
+        public RelayCommand SortAge
+        {
+            get
+            {
+                return sortAge ??
+                    (sortAge = new RelayCommand(obj =>
+                    {
+                        bool flag = false;
+
+                        ObservableCollection<Student> tmp = new ObservableCollection<Student>(SelectedStudents.OrderBy(s => s.Birthday));
+                        for (int i = 0; i < SelectedStudents.Count; i++)
+                        {
+                            if (!tmp[i].Equals(SelectedStudents[i]))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                        {
+                            tmp = new ObservableCollection<Student>(SelectedStudents.OrderByDescending(s => s.Birthday));
+                            for (int i = 0; i < SelectedStudents.Count; i++)
+                            {
+                                if (!tmp[i].Equals(SelectedStudents[i]))
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (flag)
+                        {
+                            SelectedStudents = new ObservableCollection<Student>(SelectedStudents.OrderBy(s => s.Birthday));
+                        }
+                        else
+                        {
+                            SelectedStudents = tmp;
+                        }
+
+                        OnPropertyChanged("SelectedStudents");
+                    }));
+            }
+        }
+        #endregion
         #endregion
 
+        #region Watches
 
+        private RelayCommand openWatchesCommand;
+        public RelayCommand OpenWatchesCommand
+        {
+            get
+            {
+                return openWatchesCommand ??
+                  (openWatchesCommand = new RelayCommand(obj =>
+                  {
+                      
+                      try
+                      {
+                          WatchesViewModel watchesWindow = new WatchesViewModel(this);
+                          if (watchesWindow.watchesView.ShowDialog() == true)
+                          {
+                              
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+                  }));
+            }
+        }
+
+        private RelayCommand writeWatchCommand;
+        public RelayCommand WriteWatchCommand
+        {
+            get
+            {
+                return writeWatchCommand ??
+                  (writeWatchCommand = new RelayCommand(obj =>
+                  {
+
+                      DutyFloorWatch dutyFloorWatch = new DutyFloorWatch();
+                      try
+                      {
+                          WatchWriteViewModel watchWriteViewModel = new WatchWriteViewModel(SelectedStudent, dutyFloorWatch);
+                          if (watchWriteViewModel.watchWriteView.ShowDialog() == true)
+                          {
+                              dutyFloorWatch = watchWriteViewModel.SelectedDutyFloorWatch;
+                              db.DutyFloorWatches.Add(dutyFloorWatch);
+                              db.SaveChanges();
+
+                              //SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedRoomF));
+
+                              //OnPropertyChanged("SelectedRoomF");
+                              //OnPropertyChanged("SelectedStudents");
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+                  }));
+            }
+        }
+
+
+        #endregion
 
     }
 }

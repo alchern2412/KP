@@ -10,20 +10,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace KP
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для WatchesView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WatchesView : Window
     {
-        public MainWindow()
+        public WatchesView()
         {
             InitializeComponent();
-            DataContext = new ApplicationViewModel();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
         }
     }
 }

@@ -58,5 +58,10 @@ namespace KP
                 StudSovietMember = this.StudSovietMember
             };
         }
+
+        public override string ToString()
+        {
+            return $"{LastName} {FirstName.Substring(0,1)}.";
+        }
     }
 }

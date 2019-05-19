@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 
 namespace KP
 {
-    internal class StudentWindowViewModel : INotifyPropertyChanged
+    public class StudentWindowViewModel : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -24,6 +24,7 @@ namespace KP
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
 
         public Student Student { get; private set; }
         public StudentWindowView studentWindowView;
@@ -263,7 +264,7 @@ namespace KP
                       }
                       catch (Exception ex)
                       {
-                          
+                          MessageBox.Show(ex.Message);
                       }
                   }));
             }
@@ -300,7 +301,7 @@ namespace KP
                     throw new Exception("Ошибка! Не выбрана комната!");
                 }
 
-                // new student
+                // Existing
                 if (s.FirstName != null)
                 {
                     Student = s;
@@ -330,7 +331,7 @@ namespace KP
                     SelectedBirthday = (DateTime)Student.Birthday;
 
                 }
-                // existing student
+                // new student
                 else
                 {
                     Student = s;
@@ -344,7 +345,9 @@ namespace KP
                     SelectedDateOfEntryMember = DateTime.Now;
                     SelectedBirthday = DateTime.Now;
                     SelectedSex = "Мужской";
-
+                    SelectedCourse = 1;
+                    SelectedGroup = 1;
+                    SelectedFaculty = faculties[0];
 
                 }
 
