@@ -30,10 +30,5 @@ namespace KP
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<Student> Students { get; set; }
         public virtual Floor Floor { get; set; }
-
-        public override string ToString()
-        {
-            return Number.ToString();
-        }
     }
 }

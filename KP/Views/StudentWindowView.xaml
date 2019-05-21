@@ -7,9 +7,14 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
 
+        
+        xmlns:b="clr-namespace:ReactiveValidation.WPF.Behaviors;assembly=ReactiveValidation"
+       
         mc:Ignorable="d"
         Title="StudentWindowView" Width="401" Height="514">
     <Window.Resources>
+
+
 
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="8" />
@@ -17,6 +22,8 @@
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="8" />
         </Style>
+        
+        
     </Window.Resources>
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
@@ -37,12 +44,12 @@
         </Grid.RowDefinitions>
 
         <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Фамилия" Text="{Binding SelectedLastName, Mode=TwoWay}"  />
+              materialDesign:HintAssist.Hint="Фамилия" Text="{Binding SelectedLastName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  />
         <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Имя" Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay}"  />
+              materialDesign:HintAssist.Hint="Имя" Grid.Row="1" Text="{Binding SelectedFirstName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  />
 
         <TextBox Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              materialDesign:HintAssist.Hint="Отчество" Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay}"  />
+              materialDesign:HintAssist.Hint="Отчество" Grid.Row="2" Text="{Binding SelectedSecondName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  />
 
 
 
@@ -98,7 +105,7 @@
             </ComboBox.ItemsSource>
         </ComboBox>
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Характеристика" Grid.Row="8" Text="{Binding SelectedNote, Mode=TwoWay}" Grid.Column="1" />
+        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Характеристика" Grid.Row="8" Text="{Binding SelectedNote, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
         <!--<ComboBox
             Grid.Row="1" Grid.Column="1"   ItemsSource="{Binding BedCount, UpdateSourceTrigger=PropertyChanged}" >
         </ComboBox>-->
@@ -128,7 +135,7 @@
               Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="9" Grid.ColumnSpan="2" Margin="36,0,37,0" Width="162">
-            <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
+            <Button Click="Button_Click" IsEnabled="{Binding BtnOk}" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>
         
@@ -136,7 +143,7 @@
         
         <!--photo-->
         <Grid Grid.RowSpan="4" Margin="5">
-            <Button Command="{Binding OpenCommand}" Height="Auto">
+            <Button Command="{Binding OpenCommand}" Height="Auto" Background="#FFF6F6F6">
                 <Image Height="128"
                       Width="128"
                       VerticalAlignment="Center"
@@ -157,6 +164,11 @@
              VerticalAlignment="Bottom"
               materialDesign:HintAssist.Hint="Дата выселения" Grid.Row="5" Text="{Binding SelectedDateOfDeparture, Mode=TwoWay}"
               Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
-        
-    </Grid>
+        <StackPanel Grid.Row="6" Orientation="Horizontal">
+            <TextBlock
+             Text="К." VerticalAlignment="Bottom" />
+            <TextBlock
+            Grid.Row="6" Text="{Binding Student.Room.Number, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" />
+        </StackPanel>
+        </Grid>
 </Window>

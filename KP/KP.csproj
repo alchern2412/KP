@@ -49,6 +49,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.5.1.1345, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.5.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveValidation, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReactiveValidation.1.0.5\lib\net45\ReactiveValidation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -97,8 +100,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ApplicationViewModel.cs" />
-    <Compile Include="DefaultDialogService.cs" />
+    <Compile Include="Helpers\Excel.cs" />
+    <Compile Include="Helpers\Report.cs" />
+    <Compile Include="ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="Helpers\DefaultDialogService.cs" />
     <Compile Include="DutyFloorWatch.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
@@ -108,10 +113,10 @@
     <Compile Include="Floor.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
-    <Compile Include="FloorWindowView.xaml.cs">
+    <Compile Include="Views\FloorWindowView.xaml.cs">
       <DependentUpon>FloorWindowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FloorWindowViewModel.cs" />
+    <Compile Include="ViewModels\FloorWindowViewModel.cs" />
     <Compile Include="Hostel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -132,37 +137,37 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Room.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
-    <Compile Include="RoomWindowView.xaml.cs">
+    <Compile Include="Views\RoomWindowView.xaml.cs">
       <DependentUpon>RoomWindowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RoomWindowViewModel.cs" />
+    <Compile Include="ViewModels\RoomWindowViewModel.cs" />
     <Compile Include="Student.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
-    <Compile Include="StudentWindowView.xaml.cs">
+    <Compile Include="Views\StudentWindowView.xaml.cs">
       <DependentUpon>StudentWindowView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StudentWindowViewModel.cs" />
+    <Compile Include="ViewModels\StudentWindowViewModel.cs" />
     <Compile Include="StudSovietMember.cs">
       <DependentUpon>Hostel.tt</DependentUpon>
     </Compile>
-    <Compile Include="WatchesView.xaml.cs">
+    <Compile Include="Views\WatchesView.xaml.cs">
       <DependentUpon>WatchesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WatchesViewModel.cs" />
-    <Compile Include="WatchWriteView.xaml.cs">
+    <Compile Include="ViewModels\WatchesViewModel.cs" />
+    <Compile Include="Views\WatchWriteView.xaml.cs">
       <DependentUpon>WatchWriteView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WatchWriteViewModel.cs" />
-    <Page Include="FloorWindowView.xaml">
+    <Compile Include="ViewModels\WatchWriteViewModel.cs" />
+    <Page Include="Views\FloorWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -170,23 +175,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RoomWindowView.xaml">
+    <Page Include="Views\RoomWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StudentWindowView.xaml">
+    <Page Include="Views\StudentWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WatchesView.xaml">
+    <Page Include="Views\WatchesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WatchWriteView.xaml">
+    <Page Include="Views\WatchWriteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,6 +218,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Hostel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Hostel.edmx.diagram">
       <DependentUpon>Hostel.edmx</DependentUpon>
     </None>
@@ -241,6 +247,35 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />

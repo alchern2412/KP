@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using ReactiveValidation;
+using ReactiveValidation.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,6 +9,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 
@@ -15,15 +18,52 @@ using System.Windows.Media.Imaging;
 
 namespace KP
 {
-    public class StudentWindowViewModel : INotifyPropertyChanged
+    public class StudentWindowViewModel :  ValidatableObject, INotifyPropertyChanged
     {
+        //validation
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        private IObjectValidator GetValidator()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            var builder = new ValidationBuilder<StudentWindowViewModel>();
+
+            builder.RuleFor(vm => vm.SelectedLastName).NotEmpty().Must(BeAValidName).WithMessage("С заглавной буквы. Напр.: Иванов").Length(2,30);
+            builder.RuleFor(vm => vm.SelectedFirstName).NotEmpty().Must(BeAValidName).WithMessage("С заглавной буквы. Напр.: Иван").Length(2,30);
+            builder.RuleFor(vm => vm.SelectedSecondName).Must(BeAValidSecondName).Length(0,30);
+            //builder.RuleFor(vm => vm.Model).NotEmpty().WithMessage("Please specify a car model");
+            //builder.RuleFor(vm => vm.Mileage).GreaterThan(0).When(model => model.HasMileage);
+            //builder.RuleFor(vm => vm.Vin).Must(BeAValidVin).WithMessage("Please specify a valid VIN");
+            //builder.RuleFor(vm => vm.Description).Length(10, 100);
+
+            return builder.Build(this);
         }
+
+        private bool BeAValidName(string name)
+        {
+            if (Regex.IsMatch(name, @"^[A-ЯA-Z]{1}([а-яёa-z])+$"))
+            {
+                return true;
+
+            }
+            else
+                return false;
+        }
+
+        private bool BeAValidSecondName(string name)
+        {
+            if (Regex.IsMatch(name, @"[A-ЯЁA-Zа-яa-z]*"))
+                return true;
+            else
+                return false;
+        }
+
+        // properties with realisation
+
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //public void OnPropertyChanged([CallerMemberName]string prop = "")
+        //{
+        //    if (PropertyChanged != null)
+        //        PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        //}
 
 
         public Student Student { get; private set; }
@@ -52,6 +92,17 @@ namespace KP
                 studSovietPosition = value;
                 Student.StudSovietMember.Position = value;
                 OnPropertyChanged("StudSovietPosition");
+            }
+        }
+
+        bool btnOk;
+        public bool BtnOk
+        {
+            get { return btnOk; }
+            set
+            {
+                btnOk = value;
+                OnPropertyChanged("BtnOk");
             }
         }
 
@@ -284,18 +335,17 @@ namespace KP
         //    }
         //}
 
-        public StudentWindowViewModel()
-        {
-
-        }
-
         public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom)
         {
             try
             {
+
                 // for datetime
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("RU-RU");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("RU-RU");
+
+                Validator = GetValidator();
+
                 if (selectedRoom == null)
                 {
                     throw new Exception("Ошибка! Не выбрана комната!");
@@ -318,7 +368,7 @@ namespace KP
 
                     StudSovietPosition = Student.StudSovietMember.Position;
 
-                    
+                    BtnOk = true;
 
                     if (Student.Photo != null)
                     {
@@ -336,7 +386,7 @@ namespace KP
                 {
                     Student = s;
                     this.faculties = faculties;
-
+                    BtnOk = false;
                     Student.Room = selectedRoom;
                     Student.Photo = ImagePath = @"\images\user-default.png";
                     Student.StudSovietMember = new StudSovietMember();
@@ -363,20 +413,5 @@ namespace KP
 
         }
 
-
-
-        //private RelayCommand accept1Command;
-        //public RelayCommand Accept1Command
-        //{
-        //    get
-        //    {
-        //        return accept1Command ??
-        //          (accept1Command = new RelayCommand(obj =>
-        //          {
-        //              studentWindowView.DialogResult = true;
-
-        //          }));
-        //    }
-        //}
     }
 }

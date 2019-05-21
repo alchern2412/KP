@@ -50,18 +50,13 @@
     <DockPanel>
         <Menu x:Name="mainMenu" Height="30" DockPanel.Dock="Top">
             <MenuItem Height="{Binding
-                ElementName=mainMenu, Path=Height}" Header="File">
-                <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="New Project" ></MenuItem>
-                <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Open Project" >
-                    <MenuItem Header="WinForms"></MenuItem>
-                    <MenuItem Header="WPF" ></MenuItem>
-                </MenuItem>
-                <Separator />
-                <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Exit" ></MenuItem>
+                ElementName=mainMenu, Path=Height}" Header="Отчет">
+
+                <MenuItem Command="{Binding WriteReportCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Все студенты" ></MenuItem>
+                <MenuItem Command="{Binding WriteReportSelCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Выбранные студенты" ></MenuItem>
+                <MenuItem Command="{Binding WriteReportRoomCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Все комнаты" ></MenuItem>
             </MenuItem >
-            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Редактировать" >
-                <MenuItem Header="Добавить этаж"></MenuItem>
-            </MenuItem>
+            
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Дежурства" >
                 <MenuItem Command="{Binding OpenWatchesCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Просмотр" ></MenuItem>
                 <MenuItem Command="{Binding WriteWatchCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Записать" ></MenuItem>
@@ -70,6 +65,48 @@
                 <MenuItem Command="{Binding SortName}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По имени" ></MenuItem>
                 <MenuItem Command="{Binding SortLastname}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По фамилии" ></MenuItem>
                 <MenuItem Command="{Binding SortAge}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По возрасту" ></MenuItem>
+            </MenuItem>
+            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Поиск" >
+                <TextBox                                     
+            Text="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="1"
+            materialDesign:HintAssist.Hint="Ф/И/Комн"                                           
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"                                            
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+                <TextBox                                     
+            Text="{Binding SearchRoom,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="1"
+            materialDesign:HintAssist.Hint="№ комнаты"                                           
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"                                            
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+                <TextBox                                     
+            Text="{Binding SearchFaculty,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="1"
+            materialDesign:HintAssist.Hint="Факультет"                                           
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"                                            
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+                <TextBox                                     
+            Text="{Binding SearchCourse,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="1"
+            materialDesign:HintAssist.Hint="Курс"                                           
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"                                            
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+                <TextBox                                     
+            Text="{Binding SearchGroup,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Grid.Column="1"
+            materialDesign:HintAssist.Hint="Группа"                                           
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"                                            
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
             </MenuItem>
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}">
                 <MenuItem.Header>
@@ -94,7 +131,7 @@
                                     Text="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="1"
 
-            materialDesign:HintAssist.Hint="Build a search bar"
+            materialDesign:HintAssist.Hint="Ф/И/Комн"
                                             
             materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                             
@@ -134,7 +171,7 @@
                 <Grid Background="#FFFAFAFA">
                     <TextBlock HorizontalAlignment="Center">Этаж</TextBlock>
                 </Grid>
-                <ListBox Grid.Row="1" BorderThickness="1" BorderBrush="Gray" x:Name="floorsList"  ItemsSource="{Binding db.Floors.Local,UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFloor,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <ListBox Grid.Row="1" BorderThickness="1" BorderBrush="Gray" x:Name="floorsList"  ItemsSource="{Binding db.Floors.Local, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedFloor,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>

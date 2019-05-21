@@ -1,21 +1,13 @@
 ﻿<Window x:Class="KP.WatchesView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KP"
-        mc:Ignorable="d"
-        
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        
-        Title="WatchesView" Height="384" Width="418">
-    <DockPanel>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Дежурства" Height="463.5" Width="508" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <DockPanel Background="#FFFAFAFA">
         <Menu x:Name="mainMenu" Height="30" DockPanel.Dock="Top">
-            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Дежурства" >
-                <MenuItem Command="{Binding OpenWatchesCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Просмотр" ></MenuItem>
-                <MenuItem Command="{Binding WriteWatchCommand}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="Записать" ></MenuItem>
-            </MenuItem>
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Сортировать" >
                 <MenuItem Command="{Binding SortName}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По имени" ></MenuItem>
                 <MenuItem Command="{Binding SortLastname}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По фамилии" ></MenuItem>
@@ -23,8 +15,6 @@
             </MenuItem>
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}">
                 <MenuItem.Header>
-
-
                     <Grid>
 
                         <Grid.ColumnDefinitions>
@@ -39,18 +29,13 @@
                                 Kind="Magnify"
                                 Opacity=".56" />
                         </Button>
-                        <TextBox 
-                                    
+                        <TextBox     
                                 Text="{Binding SearchText,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Grid.Column="1"
-
-                                materialDesign:HintAssist.Hint="Студ/дата"
-                                            
-                                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                            
+                                materialDesign:HintAssist.Hint="Студ/дата"          
+                                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"                                         
                                 BorderThickness="0"
-                                MinWidth="80"
-                                VerticalAlignment="Center" Margin="0,1" Grid.RowSpan="2" />
+                                MinWidth="80"/>
 
                     </Grid>
 
@@ -68,9 +53,22 @@
             </Grid.ColumnDefinitions>
             <Grid>
                 <StackPanel>
-                    <Button Margin="5"></Button>
-                    <Button Margin="5"></Button>
-                    <Button Margin="5"></Button>
+                    <Button Command="{Binding SortAscendingWatchesCommand}" Margin="5" Padding="0" Background="#FFD6D6D6">
+                        <materialDesign:PackIcon Width="25" Height="25" Margin="0" Kind="SortAscending" />
+                    </Button>
+                    <Button Command="{Binding SortDescendingWatchesCommand}" Padding="0" Background="#FFD6D6D6" Margin="5">
+                        <materialDesign:PackIcon Width="25" Height="25" Margin="0" Kind="SortDescending" />
+                    </Button>
+                    <Button Command="{Binding SortWatchesFromNowCommand}" Padding="0" Background="#FFD6D6D6" Margin="5">
+                        <materialDesign:PackIcon Width="25" Height="25" Kind="TimelineTextOutline" />
+                    </Button>
+                    <ComboBox Name="comboFloors" SelectedIndex="0" materialDesign:HintAssist.Hint="Этаж"  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                           ItemsSource="{Binding applicationViewModel.db.Floors.Local}"
+                           VerticalAlignment="Center"
+                           Grid.Column="1"
+                           SelectedItem="{Binding Path=SelectedFloor, Mode=TwoWay}">
+
+                    </ComboBox>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="1">
@@ -78,26 +76,23 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid>
+                <Grid Background="#FFFAFAFA">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Этаж"/>
-                    <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                           ItemsSource="{Binding applicationViewModel.db.Floors.Local}"
-                           VerticalAlignment="Center"
-                           Grid.Column="1"
-                           SelectedItem="{Binding Path=SelectedFloor, Mode=TwoWay}">
-
-                    </ComboBox>
+                    
                 </Grid>
-                <ListBox  BorderThickness="1" BorderBrush="Gray" Grid.Row="1" ItemsSource="{Binding SelectedFloorWatches, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedWatch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
+                <TextBlock HorizontalAlignment="Center" Text="{Binding ElementName=comboFloors, Path=SelectedItem,TargetNullValue=Выберите}"/>
+                <TextBlock HorizontalAlignment="Center" Margin="6,0,0,0"  Text="этаж"/>
+                </StackPanel>
+                    <ListBox  BorderThickness="1" BorderBrush="Gray" Grid.Row="1" ItemsSource="{Binding SelectedFloorWatches, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedWatch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Background="White">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <materialDesign:ColorZone>
-                                <Grid  Width="150">
+                                <Grid  Width="195">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
@@ -136,14 +131,14 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Вахта"/>
+                    <TextBlock HorizontalAlignment="Center" Text="Вахта"/>
                 </Grid>
-                <ListBox  BorderThickness="1" BorderBrush="Gray" Grid.Row="1" ItemsSource="{Binding SelectedDutyWatches, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedWatch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <ListBox  BorderThickness="1" BorderBrush="Gray" Grid.Row="1" ItemsSource="{Binding SelectedDutyWatches, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedWatch,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Background="White">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <materialDesign:ColorZone materialDesign:ColorZoneAssist.Mode="Inverted">
-                                <Grid Width="150">
+                                <Grid Width="195">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>

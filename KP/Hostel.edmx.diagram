@@ -14,7 +14,7 @@
         <AssociationConnector Association="Hostel.FloorRoom" ManuallyRouted="false" >
         </AssociationConnector>
         <EntityTypeShape EntityType="Hostel.StudSovietMember" Width="1.5" PointX="0.625" PointY="5.125" />
-        <EntityTypeShape EntityType="Hostel.DutyFloorWatch" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="Hostel.DutyFloorWatch" Width="1.5" PointX="2.625" PointY="3.75" />
         <AssociationConnector Association="Hostel.StudentDutyWatch" />
         <AssociationConnector Association="Hostel.StudentStudSovietMember" />
       </Diagram>

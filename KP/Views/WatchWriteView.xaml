@@ -9,14 +9,18 @@
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         
-        Title="WatchWriteView" Height="307.721" Width="207.721">
-    <Grid>
+        Title="Запись на дежурство" Height="307.721" Width="207.721" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Visibility="Visible" Opacity="0.95" WindowStyle="ThreeDBorderWindow">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="26*"/>
+                <ColumnDefinition Width="21*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -25,13 +29,12 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding SelectedStudent}"></TextBlock>
+            <TextBlock Text="{Binding SelectedStudent}" Grid.ColumnSpan="2" Margin="0,0,0,17"></TextBlock>
 
-            <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+            <ComboBox SelectedIndex="1" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
            materialDesign:HintAssist.Hint="Тип дежурства"
-           VerticalAlignment="Center"  
-           Grid.Row="1" Grid.Column="0"
-           SelectedItem="{Binding Path=SelectedDutyFloorWatch.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+           VerticalAlignment="Center" Grid.Column="0"
+           SelectedItem="{Binding Path=SelectedDutyFloorWatch.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Margin="0,0,0,5" Height="38" Grid.Row="1">
                 <ComboBox.ItemsSource>
                     <x:Array Type="{x:Type sys:String}">
                         <sys:String>Этаж</sys:String>
@@ -42,17 +45,16 @@
 
             <DatePicker
              VerticalAlignment="Bottom"
-              materialDesign:HintAssist.Hint="Дата" Grid.Row="2" Grid.Column="1" Text="{Binding SelectedDutyFloorWatch.Date, Mode=TwoWay}"
-              Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  />
+              materialDesign:HintAssist.Hint="Дата" Grid.Row="2" Text="{Binding SelectedDutyFloorWatch.Date, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Grid.ColumnSpan="2"  />
 
             <materialDesign:TimePicker VerticalAlignment="Bottom"
-              materialDesign:HintAssist.Hint="Время начала" Grid.Row="3" Grid.Column="1" Text="{Binding SelectedDutyFloorWatch.TimeStart, Mode=TwoWay}"
-              Style="{StaticResource MaterialDesignFloatingHintTimePicker}" >
-            </materialDesign:TimePicker>
-            
+              materialDesign:HintAssist.Hint="Время начала" Grid.Row="3" Text="{Binding SelectedDutyFloorWatch.TimeStart, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintTimePicker}" Grid.ColumnSpan="2" />
+
             <materialDesign:TimePicker VerticalAlignment="Bottom"
-              materialDesign:HintAssist.Hint="Время окончания" Grid.Row="4" Grid.Column="1" Text="{Binding SelectedDutyFloorWatch.TimeFinish, Mode=TwoWay}"
-              Style="{StaticResource MaterialDesignFloatingHintTimePicker}" ></materialDesign:TimePicker>
+              materialDesign:HintAssist.Hint="Время окончания" Grid.Row="4" Text="{Binding SelectedDutyFloorWatch.TimeFinish, Mode=TwoWay}"
+              Style="{StaticResource MaterialDesignFloatingHintTimePicker}" Grid.ColumnSpan="2" />
         </Grid>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="2">
             <Button Click="Button_Click" Command="" IsDefault="True" MinWidth="60" Margin="5">OK</Button>

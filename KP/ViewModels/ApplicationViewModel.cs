@@ -34,27 +34,16 @@ namespace KP
 
         #endregion
 
-        ////tmp
-        //public Student st1;
-        //public Student St1
-        //{
-        //    get { return st1; }
-        //    set
-        //    {
-        //        st1 = value;
-        //        OnPropertyChanged("St1");
-        //    }
-        //}
-        /////////
 
         public ApplicationViewModel()
         {
             db = new HostelContainer();
 
-            
 
-            db.Rooms.Load();
-            db.Floors.Load();
+
+            //db.Rooms.Load();
+            db.Rooms.OrderBy(s => s.Number).Load();
+            db.Floors.OrderBy(s => s.Number).Load();
             db.Faculties.Load();
             db.StudSovietMembers.Load();
             db.DutyFloorWatches.Load();
@@ -63,94 +52,20 @@ namespace KP
             SelectedStudents = new ObservableCollection<Student>(db.Students.Local);
             OnPropertyChanged("SelectedStudents");
             //MessageBox.Show(db.Floors.Local.Count.ToString());    
-            db.Rooms.OrderBy(s => s.Number);
 
-
+            ////test excel
+            //Excel ex = new Excel(@"D:\HelloApp.xlsx",1);
+            //Report.StudentWrite(new ObservableCollection<Floor>(db.Floors.OrderBy(s => s.Number)), ex);
+            //ex.Save();
+            //ex.Close();
         }
 
         #region CommandsFloor
 
 
-        //private int floorSelectedIndex;  // выбранный этаж
-        //public int FloorSelectedIndex
-        //{
-        //    get { return floorSelectedIndex; }
-        //    set
-        //    {
-        //        if (value == -1)
-        //        {
-        //            floorSelectedIndex = 0;
-        //        }
-        //        else
-        //        {
-        //            floorSelectedIndex = value;
-        //        }
-                
-        //        OnPropertyChanged("SelectedRooms");
-        //        OnPropertyChanged("FloorSelectedIndex");
-        //        RoomSelectedIndex = 0;
-        //    }
-        //}
-
-        //private int roomSelectedIndex;  // выбранная комната
-        //public int RoomSelectedIndex
-        //{
-        //    get { return roomSelectedIndex; }
-        //    set
-        //    {
-        //        if (value == -1)
-        //        {
-        //            roomSelectedIndex = 0;
-                    
-        //        }
-        //        else
-        //        {
-        //            roomSelectedIndex = value;
-        //        }
-                
-        //        OnPropertyChanged("RoomSelectedIndex");
-        //        StudentSelectedIndex = 0;
-        //    }
-        //}
 
 
-        //////////////////////////////////////// ПОИСК
 
-        private string searchText;
-        public string SearchText
-        {
-            get { return searchText; }
-            set
-            {
-                searchText = value;
-                OnPropertyChanged("SearchText");
-                
-                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
-                OnPropertyChanged("SelectedStudents");
-                    
-            }
-        }
-
-        private int studentSelectedIndex;  // выбранный студент
-        public int StudentSelectedIndex
-        {
-            get { return studentSelectedIndex; }
-            set
-            {
-                if (value == -1)
-                {
-                    studentSelectedIndex = 0;
-
-                }
-                else
-                {
-                    studentSelectedIndex = value;
-                }
-                OnPropertyChanged("SelectedStudents");
-                OnPropertyChanged("StudentSelectedIndex");
-                OnPropertyChanged("SelectedStudent");
-            }
-        }
 
         // команда добавления нового объекта
         private RelayCommand addFloorCommand;
@@ -302,6 +217,7 @@ namespace KP
 
                               db.Rooms.Add(room);
                               db.SaveChanges();
+                              //db.Rooms.Load();
                           }
                       }
                       catch(Exception ex)
@@ -398,7 +314,7 @@ namespace KP
             get { return selectedRoom; }
             set
             {
-                SearchText = "";
+                SearchText = SearchCourse = SearchFaculty = SearchGroup = SearchRoom = "";
                 selectedRoom = value;
                 SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedRoomF));
                 OnPropertyChanged("SelectedRoomF");
@@ -410,7 +326,233 @@ namespace KP
 
         #region CommandsStudents
 
+        //////////////////////////////////////// ПОИСК
 
+        private string searchText;
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                searchText = value;
+                OnPropertyChanged("SearchText");
+
+                int roomtmp = 0;
+                if (Int32.TryParse(value, out roomtmp))
+                {
+                    SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room.Number.ToString().Contains(roomtmp.ToString())));
+                }
+                else
+                {
+                    find();
+                }
+
+                OnPropertyChanged("SelectedStudents");
+                
+            }
+        }
+
+        private void find()
+        {
+            string si = (searchText) ?? "";
+            string nroom = (searchRoom) ?? "";
+            string fc = (searchFaculty) ?? "";
+            string coursef = (searchCourse) ?? "";
+            string gr = (searchGroup) ?? "";
+            SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s =>
+            s.Room.Number.ToString().ToUpper().Contains(nroom.ToUpper())
+                    &   s.Faculty.FacultyName.ToUpper().Contains(fc.ToUpper())
+                    &   s.Course.ToString().ToUpper().Contains(coursef.ToUpper())
+                    &   s.Group.ToString().ToUpper().Contains(gr.ToUpper())))
+                    ;
+            SelectedStudents = new ObservableCollection<Student>(SelectedStudents.Where(s =>
+                    s.Room.Number.ToString().Contains(si)
+                    || s.FirstName.ToUpper().Contains(si.ToUpper())
+                    || s.LastName.ToUpper().Contains(si.ToUpper())
+                    || /**/ (s.LastName + " " + s.FirstName).ToUpper().Contains(si.ToUpper())
+                    || (s.FirstName + " " + s.LastName).ToUpper().Contains(si.ToUpper())));
+            OnPropertyChanged("SelectedStudents");
+
+        }
+
+        private string searchRoom;
+        public string SearchRoom
+        {
+            get { return searchRoom; }
+            set
+            {
+                searchRoom = value;
+                find();
+                OnPropertyChanged("SearchRoom");
+                OnPropertyChanged("SelectedStudents");
+            }
+        }
+        private string searchFaculty;
+        public string SearchFaculty
+        {
+            get { return searchFaculty; }
+            set
+            {
+                searchFaculty = value;
+                find();
+                OnPropertyChanged("SearchFaculty");
+                OnPropertyChanged("SelectedStudents");
+            }
+        }
+        private string searchCourse;
+        public string SearchCourse
+        {
+            get { return searchCourse; }
+            set
+            {
+                searchCourse = value;
+                find();
+                OnPropertyChanged("SearchCourse");
+                OnPropertyChanged("SelectedStudents");
+            }
+        }
+        private string searchGroup;
+        public string SearchGroup
+        {
+            get { return searchGroup; }
+            set
+            {
+                searchGroup = value;
+                find();
+                OnPropertyChanged("SearchGroup");
+                OnPropertyChanged("SelectedStudents");
+            }
+        }
+
+
+
+        ///////////////// сохранение отчета
+
+
+        private RelayCommand writeReportCommand;
+        public RelayCommand WriteReportCommand
+        {
+            get
+            {
+                return writeReportCommand ??
+                  (writeReportCommand = new RelayCommand(obj =>
+                  {
+                      
+                      try
+                      {
+                          ////test excel
+                          DefaultDialogService d = new DefaultDialogService();
+                          if(d.SaveFileDialog())
+                          {
+                              Excel ex = new Excel();
+                              ex.CreateNewFile();
+                              Report.StudentWrite(new ObservableCollection<Student>(db.Students.Local), ex);
+                              ex.SaveAs(d.FilePath);
+                              ex.Close();
+                          }
+
+                          
+                      }
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+                  }));
+            }
+        }
+
+        private RelayCommand writeReportSelCommand;
+        public RelayCommand WriteReportSelCommand
+        {
+            get
+            {
+                return writeReportSelCommand ??
+                  (writeReportSelCommand = new RelayCommand(obj =>
+                  {
+
+                      try
+                      {
+                          ////test excel
+                          DefaultDialogService d = new DefaultDialogService();
+                          if (d.SaveFileDialog())
+                          {
+                              Excel ex = new Excel();
+                              ex.CreateNewFile();
+                              Report.StudentWrite(SelectedStudents, ex);
+                              ex.SaveAs(d.FilePath);
+                              ex.Close();
+                          }
+
+
+                      }
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+                  }));
+            }
+        }
+
+
+        private RelayCommand writeReportRoomCommand;
+        public RelayCommand WriteReportRoomCommand
+        {
+            get
+            {
+                return writeReportRoomCommand ??
+                  (writeReportRoomCommand = new RelayCommand(obj =>
+                  {
+
+                      try
+                      {
+                          ////test excel
+                          DefaultDialogService d = new DefaultDialogService();
+                          if (d.SaveFileDialog())
+                          {
+                              Excel ex = new Excel();
+                              ex.CreateNewFile();
+                              Report.RoomWrite(new List<Room>(db.Rooms.Local), ex);
+                              ex.SaveAs(d.FilePath);
+                              ex.Close();
+                          }
+
+
+                      }
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+                  }));
+            }
+        }
+
+
+
+
+
+
+
+
+        private int studentSelectedIndex;  // выбранный студент
+        public int StudentSelectedIndex
+        {
+            get { return studentSelectedIndex; }
+            set
+            {
+                if (value == -1)
+                {
+                    studentSelectedIndex = 0;
+
+                }
+                else
+                {
+                    studentSelectedIndex = value;
+                }
+                OnPropertyChanged("SelectedStudents");
+                OnPropertyChanged("StudentSelectedIndex");
+                OnPropertyChanged("SelectedStudent");
+            }
+        }
 
 
         // команда добавления нового объекта
@@ -486,18 +628,26 @@ namespace KP
                             
 
                             db.SaveChanges();
-                            if (SearchText != null || SearchText != "")
+                            if (SearchText != null && SearchText != "")
                             {
-                                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.FirstName.ToUpper().Contains(searchText.ToUpper()) || s.LastName.ToUpper().Contains(searchText.ToUpper())));
+                                SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.FirstName.ToUpper().Contains(SearchText.ToUpper()) || s.LastName.ToUpper().Contains(SearchText.ToUpper())));
                             }
-                            else
+                            else if(SelectedRoomF != null)
                             {
                                 SelectedStudents = new ObservableCollection<Student>(db.Students.Local.Where(s => s.Room == SelectedStudent.Room));
 
                             }
+                            else
+                            {
+                                SelectedStudents = new ObservableCollection<Student>(db.Students.Local);
+                            }
                             OnPropertyChanged("SelectedRoomF");
-                                OnPropertyChanged("SelectedStudents");
+                            OnPropertyChanged("SelectedStudents");
                     }
+                        else
+                        {
+                            MessageBox.Show("Выберите студента!");
+                        }
                     }));
             }
         }
@@ -732,6 +882,10 @@ namespace KP
                       DutyFloorWatch dutyFloorWatch = new DutyFloorWatch();
                       try
                       {
+                          if(SelectedStudent == null)
+                          {
+                              throw new Exception("Ошибка! Выберите студента!");
+                          }
                           WatchWriteViewModel watchWriteViewModel = new WatchWriteViewModel(SelectedStudent, dutyFloorWatch);
                           if (watchWriteViewModel.watchWriteView.ShowDialog() == true)
                           {

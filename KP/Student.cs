@@ -61,7 +61,7 @@ namespace KP
 
         public override string ToString()
         {
-            return $"{LastName} {FirstName.Substring(0,1)}.";
+            return $"{LastName} {FirstName}";
         }
     }
 }
