@@ -26,35 +26,70 @@ namespace KP
         {
             var builder = new ValidationBuilder<StudentWindowViewModel>();
 
-            builder.RuleFor(vm => vm.SelectedLastName).NotEmpty().Must(BeAValidName).WithMessage("С заглавной буквы. Напр.: Иванов").Length(2,30);
+            builder.RuleFor(vm => vm.SelectedLastName).NotEmpty().Must(BeAValidLastName).WithMessage("С заглавной буквы. Напр.: Иванов").Length(2,30);
             builder.RuleFor(vm => vm.SelectedFirstName).NotEmpty().Must(BeAValidName).WithMessage("С заглавной буквы. Напр.: Иван").Length(2,30);
             builder.RuleFor(vm => vm.SelectedSecondName).Must(BeAValidSecondName).Length(0,30);
-            //builder.RuleFor(vm => vm.Model).NotEmpty().WithMessage("Please specify a car model");
-            //builder.RuleFor(vm => vm.Mileage).GreaterThan(0).When(model => model.HasMileage);
-            //builder.RuleFor(vm => vm.Vin).Must(BeAValidVin).WithMessage("Please specify a valid VIN");
-            //builder.RuleFor(vm => vm.Description).Length(10, 100);
 
             return builder.Build(this);
         }
 
         private bool BeAValidName(string name)
         {
-            if (Regex.IsMatch(name, @"^[A-ЯA-Z]{1}([а-яёa-z])+$"))
+            if (Regex.IsMatch(name, @"^[А-ЯA-Z][А-Яа-яA-Za-z]+"))
             {
+                bName = true;
+                BtnOk = true;
                 return true;
 
             }
             else
+            {
+                bName = false;
+                BtnOk = false;
                 return false;
+            }
+        }
+
+        private bool BeAValidLastName(string name)
+        {
+            if (Regex.IsMatch(name, @"^[А-ЯA-Z][А-Яа-яA-Za-z]+"))
+            {
+                bLastName = true;
+                BtnOk = true;
+                return true;
+
+            }
+            else
+            {
+                bLastName = false;
+                BtnOk = false;
+                return false;
+            }
         }
 
         private bool BeAValidSecondName(string name)
         {
-            if (Regex.IsMatch(name, @"[A-ЯЁA-Zа-яa-z]*"))
+            if (name == null || name == "")
+            {
+                bSecondName = true;
+                BtnOk = true ;
                 return true;
+            }
+            if (Regex.IsMatch(name, @"^[А-ЯA-Z][А-Яа-яA-Za-z]+"))
+            {
+                bSecondName = true;
+                BtnOk = true;
+                return true;
+
+            }
             else
+            {
+                bSecondName = false;
+                BtnOk = true;
                 return false;
+            }
         }
+
 
         // properties with realisation
 
@@ -95,13 +130,18 @@ namespace KP
             }
         }
 
+
+        bool bName = false;
+        bool bSecondName = false;
+        bool bLastName = false;
+
         bool btnOk;
         public bool BtnOk
         {
             get { return btnOk; }
             set
             {
-                btnOk = value;
+                btnOk = (bName && bLastName && bSecondName)? true : false;
                 OnPropertyChanged("BtnOk");
             }
         }

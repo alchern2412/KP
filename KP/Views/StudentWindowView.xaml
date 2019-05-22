@@ -110,7 +110,7 @@
             Grid.Row="1" Grid.Column="1"   ItemsSource="{Binding BedCount, UpdateSourceTrigger=PropertyChanged}" >
         </ComboBox>-->
 
-        <ComboBox  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+        <ComboBox IsEditable="True" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
               materialDesign:HintAssist.Hint="Должность" VerticalAlignment="Center"  Grid.Row="7" Grid.Column="0" SelectedItem="{Binding Path=StudSovietPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ComboBox.ItemsSource>
                 <x:Array Type="{x:Type sys:String}">

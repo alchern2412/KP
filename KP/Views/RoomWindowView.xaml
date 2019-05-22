@@ -30,7 +30,7 @@
         </Grid.ColumnDefinitions>
         
         <TextBlock Text="Комната" />
-        <TextBox IsEnabled="{Binding Flag, UpdateSourceTrigger=PropertyChanged}" Text="{Binding Room.Number}" Grid.Column="1" />
+        <TextBox IsEnabled="{Binding Flag, UpdateSourceTrigger=PropertyChanged}" Text="{Binding RoomNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
 
         <TextBlock Grid.Row="1" Text="Кровать" />
         <ComboBox VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" SelectedIndex="{Binding SelectedBedCount}" SelectedItem="{Binding Path=SelectedBedCount, Mode=TwoWay}">
@@ -72,7 +72,7 @@
         </ComboBox>
 
         <StackPanel Grid.ColumnSpan="2"  HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="4" Margin="16,0,17,0" Width="162">
-            <Button Click="Button_Click" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
+            <Button IsEnabled="{Binding BtnOk}" Click="Button_Click" IsDefault="True" MinWidth="60" Margin="5">OK</Button>
             <Button IsCancel="True" MinWidth="60" Margin="5">Отмена</Button>
         </StackPanel>
     </Grid>

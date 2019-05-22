@@ -19,7 +19,7 @@ namespace KP
         {
             this.SelectedStudent = student;
             this.SelectedDutyFloorWatch = dutyFloorWatch;
-
+            SelectedDutyFloorWatch.Type = "Вахта";
             SelectedDutyFloorWatch.Student = SelectedStudent;
             SelectedDutyFloorWatch.Date = DateTime.Now;
             SelectedDutyFloorWatch.TimeStart = new TimeSpan(0, 0, 0);

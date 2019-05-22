@@ -8,11 +8,6 @@
         Title="Дежурства" Height="463.5" Width="508" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <DockPanel Background="#FFFAFAFA">
         <Menu x:Name="mainMenu" Height="30" DockPanel.Dock="Top">
-            <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}" Header="Сортировать" >
-                <MenuItem Command="{Binding SortName}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По имени" ></MenuItem>
-                <MenuItem Command="{Binding SortLastname}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По фамилии" ></MenuItem>
-                <MenuItem Command="{Binding SortAge}" Height="{Binding ElementName=mainMenu, Path=Height}" Header="По возрасту" ></MenuItem>
-            </MenuItem>
             <MenuItem Height="{Binding ElementName=mainMenu, Path=Height}">
                 <MenuItem.Header>
                     <Grid>
@@ -52,7 +47,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid>
-                <StackPanel>
+                <StackPanel Margin="0,0,10,0">
                     <Button Command="{Binding SortAscendingWatchesCommand}" Margin="5" Padding="0" Background="#FFD6D6D6">
                         <materialDesign:PackIcon Width="25" Height="25" Margin="0" Kind="SortAscending" />
                     </Button>

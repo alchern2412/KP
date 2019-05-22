@@ -1,22 +1,65 @@
-﻿using System;
+﻿using ReactiveValidation;
+using ReactiveValidation.Extensions;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace KP
 {
-    public class RoomWindowViewModel
+    public class RoomWindowViewModel : ValidatableObject
     {
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        private IObjectValidator GetValidator()
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            var builder = new ValidationBuilder<RoomWindowViewModel>();
+
+            builder.RuleFor(vm => vm.RoomNumber).Must(BeAValidRoom).WithMessage("Только цифры. Напр: 102 {1 - этаж, 02 - комн.}").LessThan(10000);
+            
+            return builder.Build(this);
+        }
+
+        private bool BeAValidRoom(int number)
+        {
+            if (Regex.IsMatch(number.ToString(), @"^([1-9]{1}[0-9]{2})$"))
+            {
+                Room.Number = RoomNumber;
+                BtnOk = true;
+                return true;
+            }
+            else
+            {
+                BtnOk = false;
+                return false;
+            }
         }
 
         public Room Room { get; private set; }
+
+        private bool btnOk;
+        public bool BtnOk
+        {
+            get { return btnOk; }
+            set
+            {
+                btnOk = value;
+                OnPropertyChanged("BtnOk");
+            }
+        }
+
+        private int roomNumber;
+        public int RoomNumber
+        {
+            get { return roomNumber; }
+            set
+            {
+                roomNumber = value;
+                OnPropertyChanged("RoomNumber");
+            }
+        }
+
 
 
         int selectedBedCount;
@@ -82,7 +125,7 @@ namespace KP
 
             if (Room.Number != 0)
             {
-                
+                RoomNumber = Room.Number;
 
                 Flag = false;
             }
@@ -91,6 +134,7 @@ namespace KP
                 Flag = true;
             }
 
+            Validator = GetValidator();
             SelectedBedCount = (Room.Bed != null) ? (int)Room.Bed : 4;
             SelectedChairCount = (Room.Chair != null) ? (int)Room.Chair : 4;
             SelectedNightstandCount = (Room.Nightstand != null) ? (int)Room.Nightstand : 4;
@@ -98,19 +142,5 @@ namespace KP
             roomWindowView = new RoomWindowView();
             roomWindowView.DataContext = this;
         }
-
-        //private RelayCommand accept1Command;
-        //public RelayCommand Accept1Command
-        //{
-        //    get
-        //    {
-        //        return accept1Command ??
-        //          (accept1Command = new RelayCommand(obj =>
-        //          {
-        //              roomWindowView.DialogResult = true;
-
-        //          }));
-        //    }
-        //}
     }
 }

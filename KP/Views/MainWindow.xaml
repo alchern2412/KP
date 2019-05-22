@@ -290,7 +290,7 @@
                                         <TextBlock Grid.Row="1" Margin="1">Имя:</TextBlock>
                                         <TextBlock Grid.Row="1" Grid.Column="1" Margin="1" Text="{Binding Path=FirstName}"/>
                                         <TextBlock Grid.Row="2" Margin="1">Отчество:</TextBlock>
-                                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="1" Text="{Binding Path=SecondName}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="1" Text="{Binding Path=SecondName, TargetNullValue=[-]}"/>
                                         <TextBlock Grid.Row="3" Margin="1">Курс:</TextBlock>
                                         <TextBlock Grid.Row="3" Grid.Column="1" Margin="1" Text="{Binding Path=Course}"/>
                                         <TextBlock Grid.Row="4" Margin="1">Группа:</TextBlock>
