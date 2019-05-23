@@ -149,6 +149,47 @@ namespace KP
             }
         }
 
+
+        private RelayCommand deleteWatchCommand;
+        public RelayCommand DeleteWatchCommand
+        {
+            get
+            {
+
+                return deleteWatchCommand ??
+                  (deleteWatchCommand = new RelayCommand(obj =>
+                  {
+                      try
+                      {
+                          // delete selected watch
+
+                          if (SelectedWatch.Type == "Вахта")
+                          {
+                              applicationViewModel.db.DutyFloorWatches.Remove(SelectedWatch);
+                          }
+                          else if (SelectedWatch.Type == "Этаж")
+                          {
+                              applicationViewModel.db.DutyFloorWatches.Remove(SelectedWatch);
+                          }
+                          applicationViewModel.db.SaveChanges();
+                          // update watches from DB
+                          SelectedDutyWatches = new ObservableCollection<DutyFloorWatch>(applicationViewModel.db.DutyFloorWatches.Where(s => s.Type == "Вахта"));
+                          OnPropertyChanged("SelectedDutyWatches");
+                          SelectedFloorWatches = new ObservableCollection<DutyFloorWatch>(applicationViewModel.db.DutyFloorWatches.Where(s => s.Type == "Этаж"));
+                          SelectedFloorWatches = new ObservableCollection<DutyFloorWatch>(SelectedFloorWatches.Where(s => s.Student.Room.Floor.ToString() == SelectedFloor.ToString()));
+                          OnPropertyChanged("SelectedFloor");
+                          OnPropertyChanged("SelectedFloorWatches");
+                      }
+
+                      catch (Exception ex)
+                      {
+                          MessageBox.Show(ex.Message);
+                      }
+                  }));
+
+            }
+        }
+
         private RelayCommand sortDescendingWatchesCommand;
         public RelayCommand SortDescendingWatchesCommand
         {

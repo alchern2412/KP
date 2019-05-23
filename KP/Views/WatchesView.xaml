@@ -64,6 +64,9 @@
                            SelectedItem="{Binding Path=SelectedFloor, Mode=TwoWay}">
 
                     </ComboBox>
+                    <Button Command="{Binding DeleteWatchCommand}" Padding="0" Background="#FFD6D6D6" Margin="5">
+                        <materialDesign:PackIcon Width="25" Height="25" Kind="DeleteForeverOutline" />
+                    </Button>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="1">

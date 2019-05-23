@@ -35,6 +35,10 @@ namespace KP
 
         private bool BeAValidName(string name)
         {
+            if(name == null)
+            {
+                return false;
+            }
             if (Regex.IsMatch(name, @"^[А-ЯA-Z][А-Яа-яA-Za-z]+"))
             {
                 bName = true;
@@ -52,6 +56,10 @@ namespace KP
 
         private bool BeAValidLastName(string name)
         {
+            if(name == null)
+            {
+                return false;
+            }
             if (Regex.IsMatch(name, @"^[А-ЯA-Z][А-Яа-яA-Za-z]+"))
             {
                 bLastName = true;
@@ -361,20 +369,6 @@ namespace KP
             }
         }
 
-        //int selectedIndexFaculty;
-        //public int SelectedIndexFaculty
-        //{
-        //    get { return selectedIndexFaculty; }
-        //    set
-        //    {
-        //        if (selectedIndexFaculty != null)
-        //        {
-
-        //        }
-        //        OnPropertyChanged("SelectedIndexFaculty");
-        //    }
-        //}
-
         public StudentWindowViewModel(Student s, ObservableCollection<Faculty> faculties, Room selectedRoom)
         {
             try
@@ -437,7 +431,10 @@ namespace KP
                     SelectedSex = "Мужской";
                     SelectedCourse = 1;
                     SelectedGroup = 1;
-                    SelectedFaculty = faculties[0];
+                    SelectedFaculty = faculties[0]??new Faculty {FacultyName="Неизв" };
+                    SelectedFirstName = "";
+                    SelectedLastName = "";
+                    SelectedSecondName = "";
 
                 }
 
